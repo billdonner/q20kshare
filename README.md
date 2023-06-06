@@ -1,3 +1,5 @@
 # q20kshare
 
-A description of this package.
+Freeport.Software
+
+shared data structures and code for q20k family
