@@ -9,7 +9,7 @@ public struct q20kshare {
 /* Challenge(s) is the basic heart of q20k world */
 
 public struct AIReturns: Codable,Equatable,Hashable {
-  internal init(question: String, topic: String, hint: String, answers: [String], correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil) {
+ public init(question: String, topic: String, hint: String, answers: [String], correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil) {
     self.question = question
     self.topic = topic
     self.hint = hint
