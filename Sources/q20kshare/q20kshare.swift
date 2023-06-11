@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
     public private(set) var text = "Q20KSHARE"
-    public private(set) var version = "0.0.2"
+    public private(set) var version = "0.0.3"
     public init() {
     }
 }
@@ -72,7 +72,7 @@ public struct Challenge : Codable,Equatable,Hashable  {
 
 
 public struct GameData : Codable, Hashable,Identifiable,Equatable {
-  public  init(subject: String, challenges: [AIReturns]) {
+  public  init(subject: String, challenges: [Challenge]) {
     self.subject = subject
     self.challenges = challenges //.shuffled()  //randomize
     self.id = UUID().uuidString
@@ -81,6 +81,6 @@ public struct GameData : Codable, Hashable,Identifiable,Equatable {
   
   public   let id : String
   public   let subject: String
-  public   let challenges: [AIReturns]
+  public   let challenges: [Challenge]
   public   let generated: Date
 }
