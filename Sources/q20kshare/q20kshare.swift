@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
     public private(set) var text = "Q20KSHARE"
-    public private(set) var version = "0.0.3"
+    public private(set) var version = "0.0.4"
     public init() {
     }
 }
