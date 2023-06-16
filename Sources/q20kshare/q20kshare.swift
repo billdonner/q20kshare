@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
     public private(set) var text = "Q20KSHARE"
-    public private(set) var version = "0.0.5"
+    public private(set) var version = "0.0.6"
     public init() {
     }
 }
@@ -34,7 +34,7 @@ public struct AIReturns: Codable,Equatable,Hashable {
   }
 }
 public struct Challenge : Codable,Equatable,Hashable  {
-  internal init(question: String, topic: String, hint: String, answers: [String], correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil, id: String? = nil, date: Date? = nil) {
+  public init(question: String, topic: String, hint: String, answers: [String], correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil, id: String? = nil, date: Date? = nil) {
     self.question = question
     self.topic = topic
     self.hint = hint
