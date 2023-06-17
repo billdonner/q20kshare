@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
     public private(set) var text = "Q20KSHARE"
-    public private(set) var version = "0.0.6"
+    public private(set) var version = "0.0.7"
     public init() {
     }
 }
@@ -34,7 +34,7 @@ public struct AIReturns: Codable,Equatable,Hashable {
   }
 }
 public struct Challenge : Codable,Equatable,Hashable  {
-  public init(question: String, topic: String, hint: String, answers: [String], correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil, id: String? = nil, date: Date? = nil) {
+  public init(question: String, topic: String, hint: String, answers: [String], correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil, id: String? = nil, date: Date? = nil, opinions:[Opinion] = []) {
     self.question = question
     self.topic = topic
     self.hint = hint
@@ -45,6 +45,7 @@ public struct Challenge : Codable,Equatable,Hashable  {
     self.image = image
     self.id = id
     self.date = date
+    self.opinions = opinions
   }
 
   public let question: String
@@ -58,6 +59,7 @@ public struct Challenge : Codable,Equatable,Hashable  {
   // these fields are hidden from the ai and filled in by pumper
   public let id:String? // can be real uuid
   public let date:Date? // hmmm
+  public let opinions:[Opinion]
   
   
   public static func decodeArrayFrom(data:Data) throws -> [Challenge]{
@@ -69,7 +71,6 @@ public struct Challenge : Codable,Equatable,Hashable  {
   
 }
 /* an array of GameData is published to the IOS App */
-
 
 public struct GameData : Codable, Hashable,Identifiable,Equatable {
   public  init(subject: String, challenges: [Challenge]) {
@@ -84,3 +85,22 @@ public struct GameData : Codable, Hashable,Identifiable,Equatable {
   public   let challenges: [Challenge]
   public   let generated: Date
 }
+
+/** Opinions arrive from multiple ChatBots */
+public struct Opinion : Codable, Equatable, Hashable {
+  public  init(id: String, truth: String, explanation: String, source: String) {
+    self.id = id
+    self.truth = truth
+    self.source = source
+    self.explanation = explanation
+    self.generated = Date()
+  }
+
+  public let id:String
+  public let truth:String
+  public let explanation:String
+  public let source:String
+  public let generated:Date
+  
+}
+
