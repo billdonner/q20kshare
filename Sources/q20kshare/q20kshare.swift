@@ -87,6 +87,16 @@ public struct GameData : Codable, Hashable,Identifiable,Equatable {
 }
 
 /** Opinions arrive from multiple ChatBots */
+public struct AIOpinion: Codable,Equatable,Hashable {
+  public let id:String
+  public let truth:String
+  public let explanation:String
+  
+  public func toOpinion() -> Opinion{
+    Opinion(id:id,truth:truth,explanation: explanation,source:"GPTBleeBlah")
+  }
+}
+
 public struct Opinion : Codable, Equatable, Hashable {
   public  init(id: String, truth: String, explanation: String, source: String) {
     self.id = id
