@@ -92,8 +92,8 @@ public struct AIOpinion: Codable,Equatable,Hashable {
   public let truth:Bool
   public let explanation:String
   
-  public func toOpinion() -> Opinion{
-    Opinion(id:id,truth:truth,explanation: explanation,source:"GPTBleeBlah")
+  public func toOpinion(source:String) -> Opinion{
+    Opinion(id:id,truth:truth,explanation: explanation,source:source)
   }
 }
 public struct AIAltOpinion: Codable,Equatable,Hashable {
@@ -101,11 +101,11 @@ public struct AIAltOpinion: Codable,Equatable,Hashable {
   public let truth:String
   public let explanation:String
   
-  public func toOpinion() -> Opinion?{
+  public func toOpinion(source:String) -> Opinion?{
     let t = truth.lowercased()
     let q = Bool(t)
     if let q = q {
-      return   Opinion(id:id,truth:q,explanation: explanation,source:"GPTBleeBlah")
+      return   Opinion(id:id,truth:q,explanation: explanation,source:source)
     }
     return nil
   }
