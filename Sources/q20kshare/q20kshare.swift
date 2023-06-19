@@ -34,7 +34,8 @@ public struct AIReturns: Codable,Equatable,Hashable {
   }
 }
 public struct Challenge : Codable,Equatable,Hashable  {
-  public init(question: String, topic: String, hint: String, answers: [String], correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil, id: String? = nil, date: Date? = nil, opinions:[Opinion] = []) {
+  public init(question: String, topic: String, hint: String, answers: [String],
+              correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil, id: String = "", date: Date = Date(), opinions:[Opinion] = []) {
     self.question = question
     self.topic = topic
     self.hint = hint
@@ -57,8 +58,8 @@ public struct Challenge : Codable,Equatable,Hashable  {
   public let article: String?// URL of article about the correct Answer
   public let image:String? // URL of image of correct Answer
   // these fields are hidden from the ai and filled in by pumper
-  public let id:String? // can be real uuid
-  public let date:Date? // hmmm
+  public let id:String // can be real uuid
+  public let date:Date // hmmm
   public let opinions:[Opinion]
   
   
