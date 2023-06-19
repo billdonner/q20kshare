@@ -96,7 +96,20 @@ public struct AIOpinion: Codable,Equatable,Hashable {
     Opinion(id:id,truth:truth,explanation: explanation,source:"GPTBleeBlah")
   }
 }
-
+public struct AIAltOpinion: Codable,Equatable,Hashable {
+  public let id:String
+  public let truth:String
+  public let explanation:String
+  
+  public func toOpinion() -> Opinion?{
+    let t = truth.lowercased()
+    let q = Bool(t)
+    if let q = q {
+      return   Opinion(id:id,truth:q,explanation: explanation,source:"GPTBleeBlah")
+    }
+    return nil
+  }
+}
 public struct Opinion : Codable, Equatable, Hashable {
   public  init(id: String, truth: Bool, explanation: String, source: String) {
     self.id = id
