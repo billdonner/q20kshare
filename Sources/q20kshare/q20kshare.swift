@@ -88,7 +88,7 @@ public struct GameData : Codable, Hashable,Identifiable,Equatable {
 }
 
 /** Opinions arrive from multiple ChatBots */
-public struct AIOpinion: Codable,Equatable,Hashable {
+public struct AIOpinion: Codable,Equatable,Hashable,Identifiable {
   public let id:String
   public let truth:Bool
   public let explanation:String
@@ -97,7 +97,7 @@ public struct AIOpinion: Codable,Equatable,Hashable {
     Opinion(id:UUID().uuidString,truth:truth,explanation: explanation,source:source)
   }
 }
-public struct AIAltOpinion: Codable,Equatable,Hashable {
+public struct AIAltOpinion: Codable,Equatable,Hashable,Identifiable {
   public let id:String
   public let truth:String
   public let explanation:String
@@ -111,7 +111,7 @@ public struct AIAltOpinion: Codable,Equatable,Hashable {
     return nil
   }
 }
-public struct Opinion : Codable, Equatable, Hashable {
+public struct Opinion : Codable, Equatable, Hashable,Identifiable {
   public  init(id: String, truth: Bool, explanation: String, source: String) {
     self.id = id
     self.truth = truth
