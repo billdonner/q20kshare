@@ -139,13 +139,14 @@ public struct ChatGPTResponse: Codable {
 
 
 public class ChatContext {
-  public init(max: Int = 1, apiKey: String, apiURL: URL, model: String , verbose: Bool , dots: Bool ) {
+  public init(max: Int = 1, apiKey: String, apiURL: URL, model: String , verbose: Bool , dots: Bool, dontcall:Bool ) {
     self.max = max
     self.apiKey = apiKey
     self.apiURL = apiURL
     self.model = model
     self.dots = dots
     self.verbose = verbose
+    self.dontcall = dontcall
   }
   
   public  var max = 1
@@ -154,6 +155,7 @@ public class ChatContext {
   public   var model: String
   public var verbose: Bool
   public var dots:Bool
+  public var dontcall:Bool
   public var tag = ""
 
   public var global_index = 0
