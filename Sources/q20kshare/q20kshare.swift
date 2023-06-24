@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
     public private(set) var text = "Q20KSHARE"
-    public private(set) var version = "0.0.12"
+    public private(set) var version = "0.0.13"
     public init() {
     }
 }
@@ -131,17 +131,22 @@ public struct Opinion : Codable, Equatable, Hashable,Identifiable {
 }
 
 public class ChatContext {
-  public init(max: Int = 1, apiKey: String, apiURL: URL, model: String ) {
+  public init(max: Int = 1, apiKey: String, apiURL: URL, model: String , verbose: Bool , dots: Bool ) {
     self.max = max
     self.apiKey = apiKey
     self.apiURL = apiURL
     self.model = model
+    self.dots = dots
+    self.verbose = verbose
   }
   
   public  var max = 1
   public  var apiKey:String
   public  var apiURL: URL
   public   var model: String
+  public var verbose: Bool
+  public var dots:Bool
+
   
   public var global_index = 0
   public var pumpCount = 0
