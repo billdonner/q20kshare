@@ -1,15 +1,15 @@
 import Foundation
 public struct q20kshare {
-    public private(set) var text = "Q20KSHARE"
-    public private(set) var version = "0.0.14"
-    public init() {
-    }
+  public private(set) var text = "Q20KSHARE"
+  public private(set) var version = "0.0.14"
+  public init() {
+  }
 }
 
 /* Challenge(s) is the basic heart of q20k world */
 
 public struct AIReturns: Codable,Equatable,Hashable {
- public init(question: String, topic: String, hint: String, answers: [String], correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil) {
+  public init(question: String, topic: String, hint: String, answers: [String], correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil) {
     self.question = question
     self.topic = topic
     self.hint = hint
@@ -28,9 +28,9 @@ public struct AIReturns: Codable,Equatable,Hashable {
   public let explanation: String? // reasoning behind the correctAnswer
   public let article: String?// URL of article about the correct Answer
   public let image:String? // URL of image of correct Answer
-
-   public func toChallenge() -> Challenge {
-      Challenge(question: self.question, topic: self.topic, hint:self.hint, answers:self.answers, correct: self.correct,id:UUID().uuidString,date:Date())
+  
+  public func toChallenge() -> Challenge {
+    Challenge(question: self.question, topic: self.topic, hint:self.hint, answers:self.answers, correct: self.correct,id:UUID().uuidString,date:Date())
   }
 }
 public struct Challenge : Codable,Equatable,Hashable  {
@@ -49,7 +49,7 @@ public struct Challenge : Codable,Equatable,Hashable  {
     self.source = source
     self.opinions = opinions
   }
-
+  
   public let question: String
   public let topic: String
   public let hint:String // a hint to show if the user needs help
@@ -121,7 +121,7 @@ public struct Opinion : Codable, Equatable, Hashable,Identifiable {
     self.explanation = explanation
     self.generated = Date()
   }
-
+  
   public let id:String
   public let truth:Bool
   public let explanation:String
@@ -149,18 +149,19 @@ public class ChatContext {
     self.dontcall = dontcall
   }
   
-  public  var max = 1
-  public  var apiKey:String
-  public  var apiURL: URL
-  public   var model: String
+  public var apiKey:String
+  public var apiURL: URL
+  public var model: String
   public var verbose: Bool
   public var dots:Bool
   public var dontcall:Bool
   public var tag = ""
-
+  
+  public var first = true
+  public var max = 1
   public var global_index = 0
   public var pumpCount = 0
-  public  var badJsonCount = 0
+  public var badJsonCount = 0
   public  var networkGlitches = 0
-
+  
 }
