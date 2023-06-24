@@ -147,7 +147,7 @@ public class ChatContext {
   public var verbose: Bool
   public var dots:Bool
 
-  
+  public var tag = ""
   public var global_index = 0
   public var pumpCount = 0
   public  var badJsonCount = 0
