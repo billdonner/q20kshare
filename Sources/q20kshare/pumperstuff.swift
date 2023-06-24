@@ -98,3 +98,72 @@ public func stripComments(source: String, commentStart: String) -> String {
   return keeplines.joined(separator: "\n")
 }
 
+
+public func callChatGPT( ctx:ChatContext,
+                             prompt:String,
+                             outputting: @escaping (String)->Void ,
+                              wait:Bool = false ) throws
+{
+ var request = URLRequest(url: ctx.apiURL)
+ request.httpMethod = "POST"
+ request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+ request.setValue("Bearer " + ctx.apiKey, forHTTPHeaderField: "Authorization")
+ request.timeoutInterval = 240//yikes
+ 
+ var respo:String = ""
+ 
+ let parameters: [String: Any] = [
+   "prompt": prompt,
+   "model": ctx.model,
+   "max_tokens": 2000,
+   "top_p": 1,
+   "frequency_penalty": 0,
+   "presence_penalty": 0,
+   "temperature": 1.0
+ ]
+ request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+ if ctx.verbose {
+   print("\n>Prompt #\(ctx.tag): \n\(prompt) \n\n>Awaiting response #\(ctx.tag) from AI.\n")
+ }
+ else {
+   print("\n>Prompt #\(ctx.tag): Awaiting response from AI.\n")
+ }
+ 
+ let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+   guard let data = data, error == nil else {
+     print("*** Network error communicating with AI ***")
+     print(error?.localizedDescription ?? "Unknown error")
+     ctx.networkGlitches += 1
+     print("*** continuing ***\n")
+     respo = " " // a hack to bust out of wait loop below
+     return
+   }
+   do {
+     let response = try JSONDecoder().decode(ChatGPTResponse.self, from: data)
+     respo  = response.choices.first?.text ?? "<<nothin>>"
+     outputting(respo)
+   }  catch {
+     print ("*** Failed to decode response from AI ***\n",error)
+     let str = String(decoding: data, as: UTF8.self)
+     print (str)
+     ctx.networkGlitches += 1
+     print("*** NOT continuing ***\n")
+     respo = " " // a hack to bust out of wait loop below
+     //return
+     exit(0)
+   }
+ }
+ task.resume()
+ // linger here if asked to wait
+ if wait {
+   var cycle = 0
+   while true && respo == ""  {
+     for _ in 0..<10 {
+       if respo != "" { break }
+       sleep(1)
+     }
+     if ctx.dots {print("\(cycle)",terminator: "")}
+     cycle = (cycle+1) % 10
+   }
+ }
+}
