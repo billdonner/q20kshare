@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
     public private(set) var text = "Q20KSHARE"
-    public private(set) var version = "0.0.9"
+    public private(set) var version = "0.0.11"
     public init() {
     }
 }
@@ -35,7 +35,7 @@ public struct AIReturns: Codable,Equatable,Hashable {
 }
 public struct Challenge : Codable,Equatable,Hashable  {
   public init(question: String, topic: String, hint: String, answers: [String],
-              correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil, id: String = "", date: Date = Date(), opinions:[Opinion] = []) {
+              correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil, id: String = "", date: Date = Date(),source: String = "", opinions:[Opinion] = []) {
     self.question = question
     self.topic = topic
     self.hint = hint
@@ -46,6 +46,7 @@ public struct Challenge : Codable,Equatable,Hashable  {
     self.image = image
     self.id = id
     self.date = date
+    self.source = source
     self.opinions = opinions
   }
 
@@ -60,6 +61,7 @@ public struct Challenge : Codable,Equatable,Hashable  {
   // these fields are hidden from the ai and filled in by pumper
   public let id:String // can be real uuid
   public let date:Date // hmmm
+  public let source:String
   public let opinions:[Opinion]
   
   
