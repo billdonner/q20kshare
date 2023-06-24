@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.0.16"
+  public private(set) var version = "0.0.18"
   public init() {
   }
 }
@@ -139,7 +139,7 @@ public struct ChatGPTResponse: Codable {
 
 
 public class ChatContext {
-  public init(max: Int = 1, apiKey: String, apiURL: URL, outURL:URL,model: String , verbose: Bool , dots: Bool, dontcall:Bool,style:PumpStyle ) {
+  public init(max: Int = 1, apiKey: String, apiURL: URL, outURL:URL,model: String , verbose: Bool , dots: Bool, dontcall:Bool,comments_pattern:String,split_pattern:String, style:PumpStyle ) {
     self.max = max
     self.apiKey = apiKey
     self.apiURL = apiURL
@@ -148,6 +148,8 @@ public class ChatContext {
     self.dots = dots
     self.verbose = verbose
     self.dontcall = dontcall
+    self.comments_pattern = comments_pattern
+    self.split_pattern = split_pattern
     self.style = style
   }
   
@@ -158,6 +160,8 @@ public class ChatContext {
   public var verbose: Bool
   public var dots:Bool
   public var dontcall:Bool
+  public var comments_pattern:String
+  public var split_pattern:String 
   public var style:PumpStyle
   
   public var tag = ""
@@ -166,7 +170,7 @@ public class ChatContext {
   public var global_index = 0
   public var pumpCount = 0
   public var badJsonCount = 0
-  public  var networkGlitches = 0
+  public var networkGlitches = 0
   
 }
 public enum PumpStyle {
