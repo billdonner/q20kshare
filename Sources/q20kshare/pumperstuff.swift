@@ -45,7 +45,7 @@ public  func getOpinion(_ xitem:String,source:String) throws -> Opinion? {
   return opinion
 }
 
-public func standardSubstitutions(source:String,stats:AINetStats)->String {
+public func standardSubstitutions(source:String,stats:ChatContext)->String {
   let source0 = source.replacingOccurrences(of:"$INDEX", with: "\(stats.global_index)")
   let source1 = source0.replacingOccurrences(of:"$NOW", with: "\(Date())")
   let source2 = source1.replacingOccurrences(of: "$UUID", with: UUID().uuidString)

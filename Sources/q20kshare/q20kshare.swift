@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
     public private(set) var text = "Q20KSHARE"
-    public private(set) var version = "0.0.11"
+    public private(set) var version = "0.0.12"
     public init() {
     }
 }
@@ -130,7 +130,7 @@ public struct Opinion : Codable, Equatable, Hashable,Identifiable {
   
 }
 
-public class AINetStats {
+public class ChatContext {
   public init(max: Int = 1, apiKey: String, apiURL: URL, model: String ) {
     self.max = max
     self.apiKey = apiKey
@@ -138,12 +138,14 @@ public class AINetStats {
     self.model = model
   }
   
-  public var global_index = 0
-  public var pumpCount = 0
-  public  var badJsonCount = 0
-  public  var networkGlitches = 0
   public  var max = 1
   public  var apiKey:String
   public  var apiURL: URL
   public   var model: String
+  
+  public var global_index = 0
+  public var pumpCount = 0
+  public  var badJsonCount = 0
+  public  var networkGlitches = 0
+
 }
