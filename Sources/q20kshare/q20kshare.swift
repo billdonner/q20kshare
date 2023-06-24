@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.0.14"
+  public private(set) var version = "0.0.16"
   public init() {
   }
 }
@@ -164,4 +164,8 @@ public class ChatContext {
   public var badJsonCount = 0
   public  var networkGlitches = 0
   
+}
+public enum PumpStyle {
+  case promptor
+  case validator
 }

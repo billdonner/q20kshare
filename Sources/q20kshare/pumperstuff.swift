@@ -99,6 +99,7 @@ public func stripComments(source: String, commentStart: String) -> String {
 }
 
 
+
 public func callChatGPT( ctx:ChatContext,
                              prompt:String,
                              outputting: @escaping (String)->Void ,
