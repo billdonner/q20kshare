@@ -177,3 +177,12 @@ public enum PumpStyle {
   case promptor
   case validator
 }
+
+
+public enum PumpingErrors: Error {
+  case badInputURL
+  case badOutputURL
+  case cantWrite
+  case noAPIKey
+  case onlyLocalFilesSupported
+}
