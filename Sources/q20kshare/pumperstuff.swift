@@ -99,6 +99,11 @@ public func stripComments(source: String, commentStart: String) -> String {
 }
 
 
+public func dontCallTheAI(ctx:ChatContext, prompt: String) {
+  print("\n>Deliberately not calling AI for prompt #\(ctx.tag):\n")
+  print(prompt)
+  //sleep(3)
+}
 
 public func callChatGPT( ctx:ChatContext,
                              prompt:String,
