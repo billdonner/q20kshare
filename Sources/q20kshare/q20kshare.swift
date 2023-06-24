@@ -130,3 +130,20 @@ public struct Opinion : Codable, Equatable, Hashable,Identifiable {
   
 }
 
+public class AINetStats {
+  public init(max: Int = 1, apiKey: String, apiURL: URL, model: String ) {
+    self.max = max
+    self.apiKey = apiKey
+    self.apiURL = apiURL
+    self.model = model
+  }
+  
+  public var global_index = 0
+  public var pumpCount = 0
+  public  var badJsonCount = 0
+  public  var networkGlitches = 0
+  public  var max = 1
+  public  var apiKey:String
+  public  var apiURL: URL
+  public   var model: String
+}
