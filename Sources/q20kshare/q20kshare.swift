@@ -189,14 +189,14 @@ public enum PumpingErrors: Error {
 public protocol ChatBotInterface {
  // deliberately blank
 }
-struct TruthQuery :Codable {
+public struct TruthQuery :Codable {
   let id:String
   let question:String
   let answer:String
   let truth:Bool?
 }
 extension Challenge {
-  func makeTruthQuery ( ) -> TruthQuery {
+  public func makeTruthQuery ( ) -> TruthQuery {
     TruthQuery(id: self.id, question:self.question, answer: self.correct, truth: nil)
   }
 }
