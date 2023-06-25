@@ -186,3 +186,6 @@ public enum PumpingErrors: Error {
   case noAPIKey
   case onlyLocalFilesSupported
 }
+protocol ChatBotInterface {
+ // deliberately blank
+}
