@@ -187,7 +187,9 @@ public enum PumpingErrors: Error {
   case onlyLocalFilesSupported
 }
 public protocol ChatBotInterface {
- // deliberately blank
+  func callTheAI(ctx:ChatContext,prompt: String,jsonOut:FileHandle?  )
+  func handleAIResponse(ctx:ChatContext, cleaned: [String],jsonOut:FileHandle?)
+  func pumpItUp(ctx:ChatContext, templates: [String]) throws
 }
 public struct TruthQuery :Codable {
   let id:String
