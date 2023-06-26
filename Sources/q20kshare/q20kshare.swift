@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.2.2"
+  public private(set) var version = "0.2.3"
   public init() {
   }
 }
@@ -15,7 +15,6 @@ public struct AIReturns: Codable,Equatable,Hashable {
     self.hint = hint
     self.answers = answers
     self.correct = correct
-    self.source = source
     self.explanation = explanation
     self.article = article
     self.image = image
@@ -26,13 +25,12 @@ public struct AIReturns: Codable,Equatable,Hashable {
   public let hint:String // a hint to show if the user needs help
   public let answers: [String]
   public let correct: String // which answer is correct
-  public let source: String // who said all this
   public let explanation: String? // reasoning behind the correctAnswer
   public let article: String?// URL of article about the correct Answer
   public let image:String? // URL of image of correct Answer
   
-  public func toChallenge() -> Challenge {
-    Challenge(question: self.question, topic: self.topic, hint:self.hint, answers:self.answers, correct: self.correct,id:UUID().uuidString,date:Date(),source:self.source)
+  public func toChallenge(source:String) -> Challenge {
+    Challenge(question: self.question, topic: self.topic, hint:self.hint, answers:self.answers, correct: self.correct,id:UUID().uuidString,date:Date(),source:source)
   }
 }
 public struct Challenge : Codable,Equatable,Hashable  {
