@@ -187,6 +187,8 @@ public enum PumpingErrors: Error {
   case cantWrite
   case noAPIKey
   case onlyLocalFilesSupported
+  case reachedMaxLimit
+  case reachedEndOfScript
 }
 public protocol ChatBotInterface {
   func callTheAI(ctx:ChatContext,prompt: String,jsonOut:FileHandle?  )
