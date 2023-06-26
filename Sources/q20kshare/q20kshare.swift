@@ -191,7 +191,7 @@ public enum PumpingErrors: Error {
   case reachedEndOfScript
 }
 public protocol ChatBotInterface {
-  func callTheAI(ctx:ChatContext,prompt: String,jsonOut:FileHandle?  )
+  func callTheAI(ctx:ChatContext,prompt: String,jsonOut:FileHandle?  ) throws
   func handleAIResponse(ctx:ChatContext, cleaned: [String],jsonOut:FileHandle?)
   func pumpItUp(ctx:ChatContext, templates: [String]) throws
 }
