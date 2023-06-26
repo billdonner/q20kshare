@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.2.1"
+  public private(set) var version = "0.2.2"
   public init() {
   }
 }
@@ -9,12 +9,13 @@ public struct q20kshare {
 /* Challenge(s) is the basic heart of q20k world */
 
 public struct AIReturns: Codable,Equatable,Hashable {
-  public init(question: String, topic: String, hint: String, answers: [String], correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil) {
+  public init(question: String, topic: String, hint: String, answers: [String], correct: String, source:String, explanation: String? = nil, article: String? = nil, image: String? = nil) {
     self.question = question
     self.topic = topic
     self.hint = hint
     self.answers = answers
     self.correct = correct
+    self.source = source
     self.explanation = explanation
     self.article = article
     self.image = image
@@ -25,12 +26,13 @@ public struct AIReturns: Codable,Equatable,Hashable {
   public let hint:String // a hint to show if the user needs help
   public let answers: [String]
   public let correct: String // which answer is correct
+  public let source: String // who said all this
   public let explanation: String? // reasoning behind the correctAnswer
   public let article: String?// URL of article about the correct Answer
   public let image:String? // URL of image of correct Answer
   
   public func toChallenge() -> Challenge {
-    Challenge(question: self.question, topic: self.topic, hint:self.hint, answers:self.answers, correct: self.correct,id:UUID().uuidString,date:Date())
+    Challenge(question: self.question, topic: self.topic, hint:self.hint, answers:self.answers, correct: self.correct,id:UUID().uuidString,date:Date(),source:self.source)
   }
 }
 public struct Challenge : Codable,Equatable,Hashable  {
