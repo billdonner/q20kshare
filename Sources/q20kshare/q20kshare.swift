@@ -193,7 +193,7 @@ public enum PumpingErrors: Error {
 public protocol ChatBotInterface {
   func callTheAI(ctx:ChatContext,prompt: String,jsonOut:FileHandle?  ) throws
   func handleAIResponse(ctx:ChatContext, cleaned: [String],jsonOut:FileHandle?)
-  func pumpItUp(ctx:ChatContext, templates: [String]) throws
+  func pumpItUp(ctx:ChatContext, templates: [String],jsonOut:FileHandle) throws
 }
 public struct TruthQuery :Codable {
   let id:String
