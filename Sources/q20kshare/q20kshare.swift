@@ -206,3 +206,12 @@ extension Challenge {
     TruthQuery(id: self.id, question:self.question, answer: self.correct, truth: nil)
   }
 }
+public func getAPIKey()throws -> String {
+  let  looky = ProcessInfo.processInfo.environment["OPENAI_API_KEY"]
+  guard let looky=looky  else { throw PumpingErrors.noAPIKey }
+  // the key is now stored in there
+  
+  let key = try String(contentsOfFile: looky,encoding: .utf8)
+ return   key.trimmingCharacters(in: .whitespacesAndNewlines)
+
+}
