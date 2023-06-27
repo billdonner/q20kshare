@@ -99,6 +99,49 @@ public func stripComments(source: String, commentStart: String) -> String {
 }
 
 
+extension Challenge {
+  public func makeTruthQuery ( ) -> TruthQuery {
+    TruthQuery(id: self.id, question:self.question, answer: self.correct, truth: nil)
+  }
+}
+
+public func getAPIKey() throws -> String {
+  let  looky = ProcessInfo.processInfo.environment["OPENAI_API_KEY"]
+  guard let looky=looky  else { throw PumpingErrors.noAPIKey }
+  // the key is now stored in there
+  
+  let key = try String(contentsOfFile: looky,encoding: .utf8)
+ return   key.trimmingCharacters(in: .whitespacesAndNewlines)
+}
+public func  prepOutputChannels(ctx:ChatContext)throws -> FileHandle? {
+  func prep(_ x:String, initial:String) throws  -> FileHandle? {
+    if (FileManager.default.createFile(atPath: x, contents: nil, attributes: nil)) {
+      print(">Pumper created \(x)")
+    } else {
+      print("\(x) not created."); throw PumpingErrors.badOutputURL
+    }
+    guard let  newurl = URL(string:x)  else {
+      print("\(x) is a bad url"); throw PumpingErrors.badOutputURL
+    }
+    do {
+      let  fh = try FileHandle(forWritingTo: newurl)
+      fh.write(initial.data(using: .utf8)!)
+      return fh
+    } catch {
+      print("Cant write to \(newurl), \(error)"); throw PumpingErrors.cantWrite
+    }
+  }
+  guard  ctx.outURL.absoluteString.hasPrefix("file://") else
+  {
+    throw PumpingErrors.onlyLocalFilesSupported
+  }
+  let s = String(ctx.outURL.deletingPathExtension().absoluteString.dropFirst(7))
+  let x = s + ".json"
+  return  try prep(x,initial:"[")
+}
+
+
+
 public func dontCallTheAI(ctx:ChatContext, prompt: String) {
   print("\n>Deliberately not calling AI for prompt #\(ctx.tag):\n")
   print(prompt)
@@ -172,4 +215,84 @@ public func callChatGPT( ctx:ChatContext,
      cycle = (cycle+1) % 10
    }
  }
+}
+
+
+  func handleAIResponse(ctx:ChatContext,cleaned: [String],jsonOut:FileHandle?,
+                        itemHandler:(ChatContext,String,FileHandle?) throws ->()) {
+    
+    // check to make sure it's valid and write to output file
+    for idx in 0..<cleaned.count {
+      do {
+        try itemHandler(ctx,cleaned [idx],jsonOut)
+      }
+      catch {
+        print(">Pumper Could not decode \(error), \n>*** BAD JSON FOLLOWS ***\n\(cleaned[idx])\n>*** END BAD JSON ***\n")
+        ctx.badJsonCount += 1
+        print("*** continuing ***\n")
+      }
+    }
+  }
+  
+  func callTheAI(ctx:ChatContext,prompt: String,jsonOut:FileHandle?, cleaner:@escaping ((String)->[String]), itemHandler: @escaping(ChatContext,String,FileHandle?) throws ->())  {
+    // going to call the ai
+    let start_time = Date()
+    do {
+      let start_count = ctx.pumpCount
+      try callChatGPT(ctx:ctx,
+                      prompt : prompt,
+                      outputting:  { response in
+        // process response from chatgpt
+        
+        //let cleaned = extractSubstringsInBrackets(input: "{ "  + response)
+        let cleaned = cleaner(response)
+      
+        // if not good then pumpCount not
+        if cleaned.count == 0 {
+          print("\n>AI Response #\(ctx.tag): no challenges  \n")
+          return
+        }
+        
+        handleAIResponse(ctx:ctx, cleaned:cleaned, jsonOut:jsonOut){ ctx,s,fh in
+          try itemHandler(ctx,s,fh)
+        }
+        
+        ctx.pumpCount += 1
+        let elapsed = Date().timeIntervalSince(start_time)
+        print("\n>AI Response #\(ctx.tag): \(ctx.pumpCount-start_count)/\(cleaned.count) challenges returned in \(elapsed) secs\n")
+        if ctx.pumpCount >= ctx.max {
+         return // Pumper.exit()
+        }
+      }, wait:true)
+      // did not throw
+    } catch {
+      // if callChapGPT throws we end up here and just print a message and continu3
+      let elapsed = Date().timeIntervalSince(start_time)
+      print("\n>AI Response #\(ctx.tag): ***ERROR \(error) no challenges returned in \(elapsed) secs\n")
+    }
+  }
+public func pumpItUp(ctx:ChatContext, templates: [String],jsonOut:FileHandle,cleaner:@escaping ((String)->[String]), itemHandler:@escaping (ChatContext,String,FileHandle?) throws ->()) throws {
+  
+  while ctx.pumpCount<ctx.max {
+    // keep doing until we hit user defined limit
+    for (idx,t) in templates.enumerated() {
+      guard ctx.pumpCount < ctx.max else { throw PumpingErrors.reachedMaxLimit }
+      let prompt0 = stripComments(source: String(t), commentStart: ctx.comments_pattern)
+      if t.count > 0 {
+        let prompt = standardSubstitutions(source:prompt0,stats:ctx)
+        if prompt.count > 0 {
+          ctx.global_index += 1
+          ctx.tag = String(format:"%03d",ctx.global_index) +  "-\(ctx.pumpCount)" + "-\( ctx.badJsonCount)" + "-\(ctx.networkGlitches)"
+          if ctx.dontcall {
+            dontCallTheAI(ctx:ctx, prompt: prompt)
+          } else {
+             callTheAI(ctx: ctx, prompt: prompt,jsonOut:jsonOut,cleaner:cleaner,itemHandler: itemHandler)
+          }
+        }
+      } else {
+        print("Warning - empty template #\(idx)")
+      }
+    }// for
+  }
+  throw PumpingErrors.reachedMaxLimit
 }
