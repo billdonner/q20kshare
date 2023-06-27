@@ -97,8 +97,8 @@ public struct AIOpinion: Codable,Equatable,Hashable,Identifiable {
   public let truth:Bool
   public let explanation:String
   
-  public func toOpinion(source:String) -> Opinion{
-    Opinion(id:UUID().uuidString,truth:truth,explanation: explanation,source:source)
+  public func toOpinion(source:String,originalID:String) -> Opinion{
+    Opinion(id:UUID().uuidString,truth:truth,explanation: explanation, originalID:  originalID,source:source)
   }
 }
 public struct AIAltOpinion: Codable,Equatable,Hashable,Identifiable {
@@ -106,27 +106,29 @@ public struct AIAltOpinion: Codable,Equatable,Hashable,Identifiable {
   public let truth:String
   public let explanation:String
   
-  public func toOpinion(source:String) -> Opinion?{
+  public func toOpinion(source:String,originalID:String) -> Opinion?{
     let t = truth.lowercased()
     let q = Bool(t)
     if let q = q {
-      return   Opinion(id:UUID().uuidString,truth:q,explanation: explanation,source:source)
+      return   Opinion(id:UUID().uuidString,truth:q,explanation: explanation, originalID:originalID,source:source)
     }
     return nil
   }
 }
 public struct Opinion : Codable, Equatable, Hashable,Identifiable {
-  public  init(id: String, truth: Bool, explanation: String, source: String) {
+  public  init(id: String, truth: Bool, explanation: String, originalID:String, source: String) {
     self.id = id
     self.truth = truth
     self.source = source
     self.explanation = explanation
+    self.originalID = originalID
     self.generated = Date()
   }
   
   public let id:String
   public let truth:Bool
   public let explanation:String
+  public let originalID:String
   public let source:String
   public let generated:Date
   

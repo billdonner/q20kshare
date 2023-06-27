@@ -27,16 +27,16 @@ public func extractSubstring(str: String, startDelim: String, endDelim: String) 
 
     return String(str[start...end])
 }
-public  func getOpinion(_ xitem:String,source:String) throws -> Opinion? {
+public  func getOpinion(_ xitem:String,source:String,originalID:String) throws -> Opinion? {
   let item = extractSubstring(str: xitem, startDelim: "{", endDelim: "}")
   guard item != "" else { print("** nothing found in getOpinion from \(xitem)"); return nil }
   var opinion:Opinion? = nil
   do {
-    opinion = try JSONDecoder().decode(AIOpinion .self,from:item.data(using:.utf8)!).toOpinion(source: source)
+    opinion = try JSONDecoder().decode(AIOpinion .self,from:item.data(using:.utf8)!).toOpinion(source: source, originalID: originalID )
   }
   catch {
     do {
-      opinion = try JSONDecoder().decode(AIAltOpinion .self,from:item.data(using:.utf8)!).toOpinion(source: source)
+      opinion = try JSONDecoder().decode(AIAltOpinion .self,from:item.data(using:.utf8)!).toOpinion(source: source, originalID: originalID)
     }
     catch {
       print("*** No opinion found \(error)\n item: '\(item)'")
