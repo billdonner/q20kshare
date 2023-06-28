@@ -29,8 +29,8 @@ public struct AIReturns: Codable,Equatable,Hashable {
   public let article: String?// URL of article about the correct Answer
   public let image:String? // URL of image of correct Answer
   
-  public func toChallenge(source:String) -> Challenge {
-    Challenge(question: self.question, topic: self.topic, hint:self.hint, answers:self.answers, correct: self.correct,id:UUID().uuidString,date:Date(),source:source)
+  public func toChallenge(source:String,prompt:String) -> Challenge {
+    Challenge(question: self.question, topic: self.topic, hint:self.hint, answers:self.answers, correct: self.correct,id:UUID().uuidString,date:Date(),source:source,prompt:prompt)
   }
 }
 public struct Challenge : Codable,Equatable,Hashable  {
