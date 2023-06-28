@@ -133,7 +133,10 @@ public func  prepOutputChannels(ctx:ChatContext)throws -> FileHandle? {
   return  try prep(x,initial:"[")
 }
 
-
+func encodeStringForJSON(string: String) -> String {
+  let escapedString = string.replacingOccurrences(of: "\"", with: "\\\"")
+  return "\"\(escapedString)\""
+}
 
 public func dontCallTheAI(ctx:ChatContext, prompt: String) {
   print("\n>Deliberately not calling AI for prompt #\(ctx.tag):\n")
@@ -146,6 +149,7 @@ public func callChatGPT( ctx:ChatContext,
                              outputting: @escaping (String)->Void ,
                               wait:Bool = false ) throws
 {
+  ctx.prompt = encodeStringForJSON(string:prompt) // copy this away
  var request = URLRequest(url: ctx.apiURL)
  request.httpMethod = "POST"
  request.setValue("application/json", forHTTPHeaderField: "Content-Type")
