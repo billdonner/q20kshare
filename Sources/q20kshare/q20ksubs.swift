@@ -24,12 +24,12 @@ public  func getOpinion(_ xitem:String,source:String) throws -> Opinion? {
   var opinion:Opinion? = nil
   do {
     let aiopinion = try JSONDecoder().decode(AIOpinion .self,from:item.data(using:.utf8)!)
-    opinion =  aiopinion.toOpinion(source: source, originalID: aiopinion.id )
+    opinion =  aiopinion.toOpinion(source: source)
   }
   catch {
     do {
       let aiopinion = try JSONDecoder().decode(AIAltOpinion .self,from:item.data(using:.utf8)!)
-      opinion = aiopinion.toOpinion(source: source, originalID: aiopinion.id)
+      opinion = aiopinion.toOpinion(source: source)
     }
     catch {
       print("*** No opinion found \(error)\n item: '\(item)'")
