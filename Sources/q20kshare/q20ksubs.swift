@@ -7,18 +7,9 @@
 
 import Foundation
 
+public typealias CLEANINGHandler = ((String)->[String])
+public typealias ITEMHandler = (ChatContext,String,FileHandle?) throws ->()
 
-//write swift function to return substring of a string between a start delimeter and end delimeter.
-//include comments
-
-/*
- This function takes a string and two delimiters as arguments.
- It will return the substring which begins after the first delimiter and ends before the second one.
-   -Parameter str: The original string which is to be searched
-   -Parameter startDelim: The substring that is beginning of the substring to be extracted
-   -Parameter endDelim: The substring that is the end of the substring to be extracted
-   -Returns: A substring beginning after startDelim and ending before endDelim
-*/
 public func extractSubstring(str: String, startDelim: String, endDelim: String) -> String {
     if !str.contains(startDelim) || !str.contains(endDelim) { return "" }
     
@@ -27,16 +18,18 @@ public func extractSubstring(str: String, startDelim: String, endDelim: String) 
 
     return String(str[start...end])
 }
-public  func getOpinion(_ xitem:String,source:String,originalID:String) throws -> Opinion? {
+public  func getOpinion(_ xitem:String,source:String) throws -> Opinion? {
   let item = extractSubstring(str: xitem, startDelim: "{", endDelim: "}")
   guard item != "" else { print("** nothing found in getOpinion from \(xitem)"); return nil }
   var opinion:Opinion? = nil
   do {
-    opinion = try JSONDecoder().decode(AIOpinion .self,from:item.data(using:.utf8)!).toOpinion(source: source, originalID: originalID )
+    let aiopinion = try JSONDecoder().decode(AIOpinion .self,from:item.data(using:.utf8)!)
+    opinion =  aiopinion.toOpinion(source: source, originalID: aiopinion.id )
   }
   catch {
     do {
-      opinion = try JSONDecoder().decode(AIAltOpinion .self,from:item.data(using:.utf8)!).toOpinion(source: source, originalID: originalID)
+      let aiopinion = try JSONDecoder().decode(AIAltOpinion .self,from:item.data(using:.utf8)!)
+      opinion = aiopinion.toOpinion(source: source, originalID: aiopinion.id)
     }
     catch {
       print("*** No opinion found \(error)\n item: '\(item)'")
@@ -217,14 +210,13 @@ public func callChatGPT( ctx:ChatContext,
  }
 }
 
-
   func handleAIResponse(ctx:ChatContext,cleaned: [String],jsonOut:FileHandle?,
-                        itemHandler:(ChatContext,String,FileHandle?) throws ->()) {
+                        itemHandler:ITEMHandler) {
     
     // check to make sure it's valid and write to output file
     for idx in 0..<cleaned.count {
       do {
-        try itemHandler(ctx,cleaned [idx],jsonOut)
+        try itemHandler(ctx,cleaned [idx],jsonOut )
       }
       catch {
         print(">Pumper Could not decode \(error), \n>*** BAD JSON FOLLOWS ***\n\(cleaned[idx])\n>*** END BAD JSON ***\n")
@@ -234,7 +226,11 @@ public func callChatGPT( ctx:ChatContext,
     }
   }
   
-  func callTheAI(ctx:ChatContext,prompt: String,jsonOut:FileHandle?, cleaner:@escaping ((String)->[String]), itemHandler: @escaping(ChatContext,String,FileHandle?) throws ->())  {
+  func callTheAI(ctx:ChatContext,
+                 prompt: String,
+                 jsonOut:FileHandle?,
+                 cleaner:@escaping CLEANINGHandler,
+                 itemHandler: @escaping ITEMHandler)  {
     // going to call the ai
     let start_time = Date()
     do {
@@ -253,8 +249,8 @@ public func callChatGPT( ctx:ChatContext,
           return
         }
         
-        handleAIResponse(ctx:ctx, cleaned:cleaned, jsonOut:jsonOut){ ctx,s,fh in
-          try itemHandler(ctx,s,fh)
+        handleAIResponse(ctx:ctx, cleaned:cleaned, jsonOut:jsonOut){ ctx,s,fh  in
+          try itemHandler(ctx,s,fh )
         }
         
         ctx.pumpCount += 1
@@ -271,7 +267,11 @@ public func callChatGPT( ctx:ChatContext,
       print("\n>AI Response #\(ctx.tag): ***ERROR \(error) no challenges returned in \(elapsed) secs\n")
     }
   }
-public func pumpItUp(ctx:ChatContext, templates: [String],jsonOut:FileHandle,cleaner:@escaping ((String)->[String]), itemHandler:@escaping (ChatContext,String,FileHandle?) throws ->()) throws {
+public func pumpItUp(ctx:ChatContext,
+                     templates: [String],
+                     jsonOut:FileHandle,
+                     cleaner:@escaping CLEANINGHandler,
+                     itemHandler:@escaping ITEMHandler) throws {
   
   while ctx.pumpCount<ctx.max {
     // keep doing until we hit user defined limit
@@ -286,7 +286,7 @@ public func pumpItUp(ctx:ChatContext, templates: [String],jsonOut:FileHandle,cle
           if ctx.dontcall {
             dontCallTheAI(ctx:ctx, prompt: prompt)
           } else {
-             callTheAI(ctx: ctx, prompt: prompt,jsonOut:jsonOut,cleaner:cleaner,itemHandler: itemHandler)
+            callTheAI(ctx: ctx, prompt: prompt,jsonOut:jsonOut, cleaner:cleaner,itemHandler: itemHandler)
           }
         }
       } else {

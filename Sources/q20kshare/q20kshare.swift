@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.2.3"
+  public private(set) var version = "0.2.10"
   public init() {
   }
 }
@@ -143,7 +143,7 @@ public struct ChatGPTResponse: Codable {
 
 
 public class ChatContext {
-  public init(max: Int = 1, apiKey: String, apiURL: URL, outURL:URL,model: String , verbose: Bool , dots: Bool, dontcall:Bool,comments_pattern:String,split_pattern:String, style:PumpStyle ) {
+  public init(max:Int, apiKey: String, apiURL: URL, outURL:URL,model: String , verbose: Bool , dots: Bool, dontcall:Bool,comments_pattern:String,split_pattern:String, style:PumpStyle ) {
     self.max = max
     self.apiKey = apiKey
     self.apiURL = apiURL
@@ -192,9 +192,7 @@ public enum PumpingErrors: Error {
   case reachedMaxLimit
   case reachedEndOfScript
 }
-public protocol ChatBotInterface {
-  func handleAIResponse(ctx:ChatContext, cleaned: [String],jsonOut:FileHandle?)
-}
+
 public struct TruthQuery :Codable {
   let id:String
   let question:String
