@@ -175,6 +175,7 @@ public class ChatContext {
   public var pumpCount = 0
   public var badJsonCount = 0
   public var networkGlitches = 0
+  public var prompt = ""
   
 }
 public enum PumpStyle {
