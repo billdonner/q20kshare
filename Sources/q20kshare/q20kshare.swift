@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.2.10"
+  public private(set) var version = "0.2.13"
   public init() {
   }
 }
@@ -46,7 +46,7 @@ public struct Challenge : Codable,Equatable,Hashable  {
     self.image = image
     self.id = id
     self.date = date
-    self.source = source
+    self.aisource = source
     self.prompt = prompt
     self.opinions = opinions
   }
@@ -62,7 +62,7 @@ public struct Challenge : Codable,Equatable,Hashable  {
   // these fields are hidden from the ai and filled in by pumper
   public let id:String // can be real uuid
   public let date:Date // hmmm
-  public let source:String
+  public let aisource:String
   public let prompt:String
   public let opinions:[Opinion]
   
