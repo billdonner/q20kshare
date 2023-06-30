@@ -1,6 +1,6 @@
 # q20kshare
 
-Freeport.Software 0.2.14
+Freeport.Software 0.2.15
 
 shared data structures and code for q20k family
 

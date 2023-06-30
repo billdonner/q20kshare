@@ -204,12 +204,14 @@ public func callChatGPT( ctx:ChatContext,
  if wait {
    var cycle = 0
    while true && respo == ""  {
+     //print before we sleep
+     if ctx.dots {print("\(cycle)",terminator: "")}
+     cycle = (cycle+1) % 10
      for _ in 0..<10 {
        if respo != "" { break }
        sleep(1)
      }
-     if ctx.dots {print("\(cycle)",terminator: "")}
-     cycle = (cycle+1) % 10
+ 
    }
  }
 }
@@ -269,6 +271,7 @@ public func callChatGPT( ctx:ChatContext,
 public func pumpItUp(ctx:ChatContext,
                      templates: [String],
                      jsonOut:FileHandle,
+                     justOnce:Bool,
                      cleaner:@escaping CLEANINGHandler,
                      itemHandler:@escaping ITEMHandler) throws {
   
@@ -292,6 +295,7 @@ public func pumpItUp(ctx:ChatContext,
         print("Warning - empty template #\(idx)")
       }
     }// for
+    if justOnce { throw PumpingErrors.reachedEndOfScript}
   }
   throw PumpingErrors.reachedMaxLimit
 }
