@@ -238,29 +238,24 @@ public func callChatGPT( ctx:ChatContext,
     // going to call the ai
     let start_time = Date()
     do {
-      let start_count = ctx.pumpCount
       try callChatGPT(ctx:ctx,
                       prompt : prompt,
                       outputting:  { response in
         // process response from chatgpt
-        
-        //let cleaned = extractSubstringsInBrackets(input: "{ "  + response)
         let cleaned = cleaner(response)
-      
-        // if not good then pumpCount not
+        // if not good then pumpCount not incremented
         if cleaned.count == 0 {
           print("\n>AI Response #\(ctx.tag): no challenges  \n")
           return
         }
-        
         handleAIResponse(ctx:ctx, cleaned:cleaned, jsonOut:jsonOut){ ctx,s,fh  in
           try itemHandler(ctx,s,fh )
         }
         
-        ctx.pumpCount += 1
+        ctx.pumpCount += cleaned.count  // this is the number items from 
         let elapsed = Date().timeIntervalSince(start_time)
-        print("\n>AI Response #\(ctx.tag): \(ctx.pumpCount-start_count)/\(cleaned.count) challenges returned in \(elapsed) secs\n")
-        if ctx.pumpCount >= ctx.max {
+        print("\n>AI Response #\(ctx.tag): \(cleaned.count) challenges returned in \(elapsed) secs\n")
+        if ctx.pumpCount >= ctx.max {  // so max limits the number of times we will successfully call chatgpt
          return // Pumper.exit()
         }
       }, wait:true)
