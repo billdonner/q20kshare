@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.2.15"
+  public private(set) var version = "0.2.16"
   public init() {
   }
 }
@@ -79,17 +79,20 @@ public struct Challenge : Codable,Equatable,Hashable  {
 /* an array of GameData is published to the IOS App */
 
 public struct GameData : Codable, Hashable,Identifiable,Equatable {
-  public  init(subject: String, challenges: [Challenge]) {
+  // added topic image for display and parameter for shuffling
+  public  init(subject: String, challenges: [Challenge],pic:String = "leaf",shuffle:Bool = false ) {
     self.subject = subject
-    self.challenges = challenges //.shuffled()  //randomize
+    self.challenges = shuffle ? challenges.shuffled() : challenges
     self.id = UUID().uuidString
     self.generated = Date()
+    self.pic = pic
   }
   
   public   let id : String
   public   let subject: String
   public   let challenges: [Challenge]
   public   let generated: Date
+  public   let pic:String?
 }
 
 /** Opinions arrive from multiple ChatBots */
