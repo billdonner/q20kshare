@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.2.16"
+  public private(set) var version = "0.2.17"
   public init() {
   }
 }
@@ -80,7 +80,7 @@ public struct Challenge : Codable,Equatable,Hashable  {
 
 public struct GameData : Codable, Hashable,Identifiable,Equatable {
   // added topic image for display and parameter for shuffling
-  public  init(subject: String, challenges: [Challenge],pic:String = "leaf",shuffle:Bool = false ) {
+  public  init(subject: String, challenges: [Challenge],pic:String? = "leaf",shuffle:Bool = false ) {
     self.subject = subject
     self.challenges = shuffle ? challenges.shuffled() : challenges
     self.id = UUID().uuidString
