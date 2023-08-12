@@ -34,7 +34,7 @@ public struct AIReturns: Codable,Equatable,Hashable {
     Challenge(question: self.question, topic: self.topic, hint:self.hint, answers:self.answers, correct: self.correct,id:UUID().uuidString,date:Date(),source:source,prompt:prompt)
   }
 }
-public struct Challenge : Codable,Equatable,Hashable  {
+public struct Challenge : Codable,Equatable,Hashable,Identifiable  {
   public init(question: String, topic: String, hint: String, answers: [String],
               correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil, id: String = "", date: Date = Date(),source: String = "", prompt:String = "", opinions:[Opinion] = []) {
     self.question = question
