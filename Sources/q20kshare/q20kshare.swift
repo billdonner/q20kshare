@@ -96,9 +96,9 @@ public struct GameData : Codable, Hashable,Identifiable,Equatable {
 }
 
 /* a full blended playing field is published to the IOS App*/
-public struct PlayData {
+public struct PlayData: Codable {
   public let gameDatum: [GameData]
-  public let id: String
+  public let playDataId: String
   public let blendDate: Date
   public let pic:String?
   
