@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.2.19"
+  public private(set) var version = "0.2.20"
   public init() {
   }
 }
@@ -97,6 +97,13 @@ public struct GameData : Codable, Hashable,Identifiable,Equatable {
 
 /* a full blended playing field is published to the IOS App*/
 public struct PlayData: Codable {
+  public init(gameDatum: [GameData], playDataId: String, blendDate: Date, pic: String? = nil) {
+    self.gameDatum = gameDatum
+    self.playDataId = playDataId
+    self.blendDate = blendDate
+    self.pic = pic
+  }
+  
   public let gameDatum: [GameData]
   public let playDataId: String
   public let blendDate: Date
