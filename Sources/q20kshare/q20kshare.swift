@@ -1,11 +1,47 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.3.1"
+  public private(set) var version = "0.3.2"
   public init() {
   }
 }
 
+public struct TopicData : Codable {
+  public init(snarky: String, version: String, author: String, date: String, purpose: String, topics: [Topic]) {
+    self.snarky = snarky
+    self.version = version
+    self.author = author
+    self.date = date
+    self.purpose = purpose
+    self.topics = topics
+  }
+  
+  public var snarky:String
+  public var version:String
+  public  var author:String
+  public  var date:String
+  public   var purpose:String
+  public  var topics:[Topic]
+}
+
+public struct Topic : Codable {
+  public init(name: String, subject: String, per: Int, desired: Int, pic: String, notes: String) {
+    self.name = name
+    self.subject = subject
+    self.per = per
+    self.desired = desired
+    self.pic = pic
+    self.notes = notes
+  }
+  
+  public  var name: String
+  public  var subject: String
+  public  var per: Int
+  public  var desired:Int
+  public  var pic: String // symbol or url
+  public  var notes: String // editors comments
+  
+}
 /* Challenge(s) is the basic heart of q20k world */
 
 public struct AIReturns: Codable,Equatable,Hashable {
