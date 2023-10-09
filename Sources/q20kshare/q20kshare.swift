@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.2.20"
+  public private(set) var version = "0.3.1"
   public init() {
   }
 }
@@ -80,12 +80,13 @@ public struct Challenge : Codable,Equatable,Hashable,Identifiable  {
 
 public struct GameData : Codable, Hashable,Identifiable,Equatable {
   // added topic image for display and parameter for shuffling
-  public  init(subject: String, challenges: [Challenge],pic:String? = "leaf",shuffle:Bool = false ) {
+  public  init(subject: String, challenges: [Challenge],pic:String? = "leaf",shuffle:Bool = false,commentary:String? = nil ) {
     self.subject = subject
     self.challenges = shuffle ? challenges.shuffled() : challenges
     self.id = UUID().uuidString
     self.generated = Date()
     self.pic = pic
+    self.commentary = commentary
   }
   
   public   let id : String
@@ -93,6 +94,7 @@ public struct GameData : Codable, Hashable,Identifiable,Equatable {
   public   let challenges: [Challenge]
   public   let generated: Date
   public   let pic:String?
+  public   let commentary:String?
 }
 
 /* a full blended playing field is published to the IOS App*/
