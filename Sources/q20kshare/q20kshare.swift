@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.4.3"
+  public private(set) var version = "0.4.4"
   public init() {
   }
 }
@@ -159,25 +159,31 @@ public struct AIOpinion: Codable,Equatable,Hashable,Identifiable {
   public let explanation:String
   
   public func toOpinion(source:String) -> Opinion{
-    Opinion(id:id,truth:truth,explanation: explanation,opinionID:UUID().uuidString,source:source)
+    Opinion(id:id,truth:truth ? Truthe.trueValue : Truthe.falseValue
+            ,explanation: explanation,opinionID:UUID().uuidString,source:source)
   }
 }
+
+// sometimes this comes back a stringy truth value 
 public struct AIAltOpinion: Codable,Equatable,Hashable,Identifiable {
   public let id:String
   public let truth:String
   public let explanation:String
   
-  public func toOpinion(source:String) -> Opinion?{
+  public func toOpinion(source:String) -> Opinion{
     let t = truth.lowercased()
     let q = Bool(t)
     if let q = q {
-      return   Opinion(id:id,truth:q,explanation: explanation, opinionID:UUID().uuidString,source:source)
+      return   Opinion(id:id,truth:q ? Truthe.trueValue : Truthe.falseValue,explanation: explanation, opinionID:UUID().uuidString,source:source)
     }
-    return nil
+    return Opinion(id:id,truth:Truthe.unknownValue,explanation: explanation, opinionID:UUID().uuidString,source:source)
   }
 }
+public enum Truthe :Codable  {
+  case trueValue,falseValue,unknownValue
+}
 public struct Opinion : Codable, Equatable, Hashable,Identifiable {
-  public  init(id: String, truth: Bool, explanation: String, opinionID:String, source: String) {
+  public  init(id: String, truth: Truthe, explanation: String, opinionID:String, source: String) {
     self.id = id
     self.truth = truth
     self.source = source
@@ -187,7 +193,7 @@ public struct Opinion : Codable, Equatable, Hashable,Identifiable {
   }
   
   public let id:String
-  public let truth:Bool
+  public let truth:Truthe
   public let explanation:String
   public let opinionID:String
   public let source:String
