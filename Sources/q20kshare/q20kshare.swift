@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.4.6"
+  public private(set) var version = "0.4.8"
   public init() {
   }
 }
@@ -179,7 +179,7 @@ public struct AIAltOpinion: Codable,Equatable,Hashable,Identifiable {
     return Opinion(id:id,truth:Truthe.unknownValue,explanation: explanation, opinionID:UUID().uuidString,source:source)
   }
 }
-public enum Truthe :Codable  {
+public enum Truthe : Int, Codable  {
   case trueValue,falseValue,unknownValue
 }
 public struct Opinion : Codable, Equatable, Hashable,Identifiable {
