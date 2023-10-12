@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.4.8"
+  public private(set) var version = "0.4.9"
   public init() {
   }
 }
@@ -265,5 +265,5 @@ public struct TruthQuery :Codable {
   let id:String
   let question:String
   let answer:String
-  let truth:Bool?
+  let truth:Truthe
 }

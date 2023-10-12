@@ -94,7 +94,7 @@ public func stripComments(source: String, commentStart: String) -> String {
 
 extension Challenge {
   public func makeTruthQuery ( ) -> TruthQuery {
-    TruthQuery(id: self.id, question:self.question, answer: self.correct, truth: nil)
+    TruthQuery(id: self.id, question:self.question, answer: self.correct, truth: Truthe.unknownValue)
   }
 }
 
