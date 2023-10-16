@@ -10,6 +10,7 @@ import Foundation
 public typealias CLEANINGHandler = ((String)->[String])
 public typealias ITEMHandler = (ChatContext,String,FileHandle?) throws ->()
 
+
 public func extractSubstring(str: String, startDelim: String, endDelim: String) -> String {
     if !str.contains(startDelim) || !str.contains(endDelim) { return "" }
     
@@ -99,11 +100,13 @@ extension Challenge {
 }
 
 public func getAPIKey() throws -> String {
+  var wooky:String = ""
   let  looky = ProcessInfo.processInfo.environment["OPENAI_API_KEY"]
-  guard let looky=looky  else { throw PumpingErrors.noAPIKey }
-  // the key is now stored in there
-  
-  let key = try String(contentsOfFile: looky,encoding: .utf8)
+  if let looky = looky { wooky = looky }
+  if wooky == "" {
+    wooky = "/users/fs/openapi.key"
+  }
+  let key = try String(contentsOfFile: wooky,encoding: .utf8)
  return   key.trimmingCharacters(in: .whitespacesAndNewlines)
 }
 public func  prepOutputChannels(ctx:ChatContext)throws -> FileHandle? {
