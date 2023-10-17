@@ -101,11 +101,11 @@ extension Challenge {
 
 public func getAPIKey() throws -> String {
   var wooky:String = ""
-  let  looky = ProcessInfo.processInfo.environment["OPENAI_API_KEY"]
-  if let looky = looky { wooky = looky }
-  if wooky == "" {
+//  let  looky = ProcessInfo.processInfo.environment["OPENAI_API_KEY"]
+//  if let looky = looky { wooky = looky }
+//  if wooky == "" {
     wooky = "/users/fs/openapi.key"
-  }
+ // }
   let key = try String(contentsOfFile: wooky,encoding: .utf8)
  return   key.trimmingCharacters(in: .whitespacesAndNewlines)
 }
