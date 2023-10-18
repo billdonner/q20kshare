@@ -1,11 +1,11 @@
 #!/bin/zsh
 echo "******-------> build snarkyc"
-/Users/billdonner/Documents/q20kshare/bild.zsh snarkyc
+/Users/fs/bild.zsh snarkyc
 echo "******-------> build pumperc"
-/Users/billdonner/Documents/q20kshare/bild.zsh pumperc
+/Users/fs/bild.zsh pumperc
 echo "******-------> build prepperc"
-/Users/billdonner/Documents/q20kshare/bild.zsh prepperc
+/Users/fs/bild.zsh prepperc
 echo "******-------> build liedetectorc"
-/Users/billdonner/Documents/q20kshare/bild.zsh liedetectorc
+/Users/fs/bild.zsh liedetectorc
 echo "******-------> build blenderc"
-/Users/billdonner/Documents/q20kshare/bild.zsh blenderc
+/Users/fs/bild.zsh blenderc

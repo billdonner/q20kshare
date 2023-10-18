@@ -1,3 +1,4 @@
+#!/bin/zsh
 if [[ $# -ne 1 ]]; then
     echo "Usage: You must provide exactly one argument!"
     exit 1
