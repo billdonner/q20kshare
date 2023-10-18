@@ -1,6 +1,6 @@
 # q20kshare
 
-Freeport.Software 0.4.93
+Freeport.Software 0.5.0
 -------
 
 

@@ -5,4 +5,4 @@ fi
 cd $1
 swift build -c release
 cd .build/release
-sudo cp -f $1 /usr/local/bin/$1
+cp -f $1 /usr/local/bin/$1
