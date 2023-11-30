@@ -162,13 +162,21 @@ public func callChatGPT( ctx:ChatContext,
  var respo:String = ""
  
  let parameters: [String: Any] = [
-   "prompt": prompt,
+  
    "model": ctx.model,
    "max_tokens": 2000,
    "top_p": 1,
    "frequency_penalty": 0,
    "presence_penalty": 0,
-   "temperature": 1.0
+   "temperature": 1.0,
+   "messages" : """
+[{  "role": "system",
+      "content": "this is the system area"
+}
+,
+{ "role" : \(prompt)
+}]
+"""
  ]
  request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
  if ctx.verbose {
