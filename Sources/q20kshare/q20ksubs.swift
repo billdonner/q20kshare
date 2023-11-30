@@ -170,13 +170,16 @@ public func callChatGPT( ctx:ChatContext,
    "presence_penalty": 0,
    "temperature": 1.0,
    "messages" : """
-[{  "role": "system",
-      "content": "this is the system area"
-}
-,
-{ "role" :"user",
-"content" :  \(prompt)
-}]
+[
+    {
+        "role": "system",
+        "content": "this is the system area"
+    },
+    {
+        "role": "user",
+        "content": "\(prompt)"
+    }
+]
 """
  ]
   print(parameters)
