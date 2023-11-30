@@ -174,7 +174,8 @@ public func callChatGPT( ctx:ChatContext,
       "content": "this is the system area"
 }
 ,
-{ "role" : \(prompt)
+{ "role" :"user",
+"content" :  "\(prompt)"
 }]
 """
  ]
