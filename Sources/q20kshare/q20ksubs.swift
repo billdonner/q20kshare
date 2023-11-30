@@ -184,7 +184,8 @@ public func callChatGPT( ctx:ChatContext,
  ]
   print(parameters)
   let x = try JSONSerialization.data(withJSONObject: parameters, options: [])
-  request.httpBody  =  x
+  print("*(*****")
+  print(x)
 
  if ctx.verbose {
    print("\n>Prompt #\(ctx.tag): \n\(prompt) \n\n>Awaiting response #\(ctx.tag) from AI.\n")
