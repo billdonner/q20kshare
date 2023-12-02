@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by bill donner on 6/24/23.
 //
@@ -12,12 +12,12 @@ public typealias ITEMHandler = (ChatContext,String,FileHandle?) throws ->()
 
 
 public func extractSubstring(str: String, startDelim: String, endDelim: String) -> String {
-    if !str.contains(startDelim) || !str.contains(endDelim) { return "" }
-    
-    let start = str.firstIndex(of: startDelim.first!)!
-    let end = str.firstIndex(of: endDelim.first!)!
-
-    return String(str[start...end])
+  if !str.contains(startDelim) || !str.contains(endDelim) { return "" }
+  
+  let start = str.firstIndex(of: startDelim.first!)!
+  let end = str.firstIndex(of: endDelim.first!)!
+  
+  return String(str[start...end])
 }
 public  func getOpinion(_ xitem:String,source:String) throws -> Opinion? {
   let item = extractSubstring(str: xitem, startDelim: "{", endDelim: "}")
@@ -71,7 +71,7 @@ public func extractSubstringsInBrackets(input: String) -> [String] {
     default: if inside {
       matches [idx].append(c)
     }
-   }
+    }
   }
   if !completed[idx] {
     matches.removeLast()
@@ -80,7 +80,7 @@ public func extractSubstringsInBrackets(input: String) -> [String] {
     $0 != ""
   }
 }
- 
+
 public func stripComments(source: String, commentStart: String) -> String {
   let lines = source.split(separator: "\n")
   var keeplines:[String] = []
@@ -101,13 +101,13 @@ extension Challenge {
 
 public func getAPIKey() throws -> String {
   var wooky:String = ""
-//  let  looky = ProcessInfo.processInfo.environment["OPENAI_API_KEY"]
-//  if let looky = looky { wooky = looky }
-//  if wooky == "" {
-    wooky = "/users/fs/openapi.key"
- // }
+  //  let  looky = ProcessInfo.processInfo.environment["OPENAI_API_KEY"]
+  //  if let looky = looky { wooky = looky }
+  //  if wooky == "" {
+  wooky = "/users/fs/openapi.key"
+  // }
   let key = try String(contentsOfFile: wooky,encoding: .utf8)
- return   key.trimmingCharacters(in: .whitespacesAndNewlines)
+  return   key.trimmingCharacters(in: .whitespacesAndNewlines)
 }
 public func  prepOutputChannels(ctx:ChatContext)throws -> FileHandle? {
   func prep(_ x:String, initial:String) throws  -> FileHandle? {
@@ -136,7 +136,7 @@ public func  prepOutputChannels(ctx:ChatContext)throws -> FileHandle? {
   return  try prep(x,initial:"[")
 }
 
-func encodeStringForJSON(string: String) -> String {
+public func encodeStringForJSON(string: String) -> String {
   let escapedString = string.replacingOccurrences(of: "\"", with: "\\\"")
   return "\"\(escapedString)\""
 }
@@ -147,151 +147,152 @@ public func dontCallTheAI(ctx:ChatContext, prompt: String) {
   //sleep(3)
 }
 
+let zz = ["a":"b","c":"d"]
 public func callChatGPT( ctx:ChatContext,
-                             prompt:String,
-                             outputting: @escaping (String)->Void ,
-                              wait:Bool = false ) throws
+                         prompt:String,
+                         outputting: @escaping (String)->Void ,
+                         wait:Bool = false ) throws
 {
   ctx.prompt = encodeStringForJSON(string:prompt) // copy this away
- var request = URLRequest(url: ctx.apiURL)
- request.httpMethod = "POST"
- request.setValue("application/json", forHTTPHeaderField: "Content-Type")
- request.setValue("Bearer " + ctx.apiKey, forHTTPHeaderField: "Authorization")
- request.timeoutInterval = 240//yikes
- 
- var respo:String = ""
- 
- let parameters: [String: Any] = [
+  var request = URLRequest(url: ctx.apiURL)
+  request.httpMethod = "POST"
+  request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+  request.setValue("Bearer " + ctx.apiKey, forHTTPHeaderField: "Authorization")
+  request.timeoutInterval = 240//yikes
   
-   "model": ctx.model,
-   "max_tokens": 2000,
-   "top_p": 1,
-   "frequency_penalty": 0,
-   "presence_penalty": 0,
-   "temperature": 1.0,
-   "messages" : [["role": "system",
-                  "content": "this is the system area"],
-                [  "role": "user",
-                   "content": "\(prompt)"]]
-/*"""
-[
-    {
-        "role": "system",
-        "content": "this is the system area"
-    },
-    {
-        "role": "user",
-        "content": "\(prompt)"
-    }
-]
-"""
- */
- ]
+  var respo:String = ""
+  
+  let parameters: [String: Any] = [
+    
+    "model": ctx.model,
+    "max_tokens": 2000,
+    "top_p": 1,
+    "frequency_penalty": 0,
+    "presence_penalty": 0,
+    "temperature": 1.0,
+    "messages" : [["role": "system",
+                   "content": "this is the system area"],
+                  [  "role": "user",
+                     "content": "\(prompt)"]]
+    /*"""
+     [
+     {
+     "role": "system",
+     "content": "this is the system area"
+     },
+     {
+     "role": "user",
+     "content": "\(prompt)"
+     }
+     ]
+     """
+     */
+  ]
   print(parameters)
   let x = try JSONSerialization.data(withJSONObject: parameters, options: [])
   print("*(*****")
-  print(x)
-
- if ctx.verbose {
-   print("\n>Prompt #\(ctx.tag): \n\(prompt) \n\n>Awaiting response #\(ctx.tag) from AI.\n")
- }
- else {
-   print("\n>Prompt #\(ctx.tag): Awaiting response from AI.\n")
- }
- 
- let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-   guard let data = data, error == nil else {
-     print("*** Network error communicating with AI ***")
-     print(error?.localizedDescription ?? "Unknown error")
-     ctx.networkGlitches += 1
-     print("*** continuing ***\n")
-     respo = " " // a hack to bust out of wait loop below
-     return
-   }
-   do {
-     let response = try JSONDecoder().decode(ChatGPTResponse.self, from: data)
-     respo  = response.choices.first?.text ?? "<<nothin>>"
-     outputting(respo)
-   }  catch {
-     print ("*** Failed to decode response from AI ***\n",error)
-     let str = String(decoding: data, as: UTF8.self)
-     print (str)
-     ctx.networkGlitches += 1
-     print("*** NOT continuing ***\n")
-     respo = " " // a hack to bust out of wait loop below
-     //return
-     exit(0)
-   }
- }
- task.resume()
- // linger here if asked to wait
- if wait {
-   var cycle = 0
-   while true && respo == ""  {
-     //print before we sleep
-     if ctx.dots {print("\(cycle)",terminator: "")}
-     cycle = (cycle+1) % 10
-     for _ in 0..<10 {
-       if respo != "" { break }
-       sleep(1)
-     }
- 
-   }
- }
-}
-
-  func handleAIResponse(ctx:ChatContext,cleaned: [String],jsonOut:FileHandle?,
-                        itemHandler:ITEMHandler) {
-    
-    // check to make sure it's valid and write to output file
-    for idx in 0..<cleaned.count {
-      do {
-        try itemHandler(ctx,cleaned [idx],jsonOut )
-      }
-      catch {
-        print(">Pumper Could not decode \(error), \n>*** BAD JSON FOLLOWS ***\n\(cleaned[idx])\n>*** END BAD JSON ***\n")
-        ctx.badJsonCount += 1
-        print("*** continuing ***\n")
-      }
-    }
+  print("\(x)")
+  
+  if ctx.verbose {
+    print("\n>Prompt #\(ctx.tag): \n\(prompt) \n\n>Awaiting response #\(ctx.tag) from AI.\n")
+  }
+  else {
+    print("\n>Prompt #\(ctx.tag): Awaiting response from AI.\n")
   }
   
-  func callTheAI(ctx:ChatContext,
-                 prompt: String,
-                 jsonOut:FileHandle?,
-                 cleaner:@escaping CLEANINGHandler,
-                 itemHandler: @escaping ITEMHandler)  {
-    // going to call the ai
-    let start_time = Date()
+  let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+    guard let data = data, error == nil else {
+      print("*** Network error communicating with AI ***")
+      print(error?.localizedDescription ?? "Unknown error")
+      ctx.networkGlitches += 1
+      print("*** continuing ***\n")
+      respo = " " // a hack to bust out of wait loop below
+      return
+    }
     do {
-      try callChatGPT(ctx:ctx,
-                      prompt : prompt,
-                      outputting:  { response in
-        // process response from chatgpt
-        let cleaned = cleaner(response)
-        // if not good then pumpCount not incremented
-        if cleaned.count == 0 {
-          print("\n>AI Response #\(ctx.tag): no challenges  \n")
-          return
-        }
-        handleAIResponse(ctx:ctx, cleaned:cleaned, jsonOut:jsonOut){ ctx,s,fh  in
-          try itemHandler(ctx,s,fh )
-        }
-        
-        ctx.pumpCount += cleaned.count  // this is the number items from 
-        let elapsed = Date().timeIntervalSince(start_time)
-        print("\n>AI Response #\(ctx.tag): \(cleaned.count) challenges returned in \(elapsed) secs\n")
-        if ctx.pumpCount >= ctx.max {  // so max limits the number of times we will successfully call chatgpt
-         return // Pumper.exit()
-        }
-      }, wait:true)
-      // did not throw
-    } catch {
-      // if callChapGPT throws we end up here and just print a message and continu3
-      let elapsed = Date().timeIntervalSince(start_time)
-      print("\n>AI Response #\(ctx.tag): ***ERROR \(error) no challenges returned in \(elapsed) secs\n")
+      let response = try JSONDecoder().decode(ChatGPTResponse.self, from: data)
+      respo  = response.choices.first?.text ?? "<<nothin>>"
+      outputting(respo)
+    }  catch {
+      print ("*** Failed to decode response from AI ***\n",error)
+      let str = String(decoding: data, as: UTF8.self)
+      print (str)
+      ctx.networkGlitches += 1
+      print("*** NOT continuing ***\n")
+      respo = " " // a hack to bust out of wait loop below
+      //return
+      exit(0)
     }
   }
+  task.resume()
+  // linger here if asked to wait
+  if wait {
+    var cycle = 0
+    while true && respo == ""  {
+      //print before we sleep
+      if ctx.dots {print("\(cycle)",terminator: "")}
+      cycle = (cycle+1) % 10
+      for _ in 0..<10 {
+        if respo != "" { break }
+        sleep(1)
+      }
+      
+    }
+  }
+}
+
+func handleAIResponse(ctx:ChatContext,cleaned: [String],jsonOut:FileHandle?,
+                      itemHandler:ITEMHandler) {
+  
+  // check to make sure it's valid and write to output file
+  for idx in 0..<cleaned.count {
+    do {
+      try itemHandler(ctx,cleaned [idx],jsonOut )
+    }
+    catch {
+      print(">Pumper Could not decode \(error), \n>*** BAD JSON FOLLOWS ***\n\(cleaned[idx])\n>*** END BAD JSON ***\n")
+      ctx.badJsonCount += 1
+      print("*** continuing ***\n")
+    }
+  }
+}
+
+func callTheAI(ctx:ChatContext,
+               prompt: String,
+               jsonOut:FileHandle?,
+               cleaner:@escaping CLEANINGHandler,
+               itemHandler: @escaping ITEMHandler)  {
+  // going to call the ai
+  let start_time = Date()
+  do {
+    try callChatGPT(ctx:ctx,
+                    prompt : prompt,
+                    outputting:  { response in
+      // process response from chatgpt
+      let cleaned = cleaner(response)
+      // if not good then pumpCount not incremented
+      if cleaned.count == 0 {
+        print("\n>AI Response #\(ctx.tag): no challenges  \n")
+        return
+      }
+      handleAIResponse(ctx:ctx, cleaned:cleaned, jsonOut:jsonOut){ ctx,s,fh  in
+        try itemHandler(ctx,s,fh )
+      }
+      
+      ctx.pumpCount += cleaned.count  // this is the number items from
+      let elapsed = Date().timeIntervalSince(start_time)
+      print("\n>AI Response #\(ctx.tag): \(cleaned.count) challenges returned in \(elapsed) secs\n")
+      if ctx.pumpCount >= ctx.max {  // so max limits the number of times we will successfully call chatgpt
+        return // Pumper.exit()
+      }
+    }, wait:true)
+    // did not throw
+  } catch {
+    // if callChapGPT throws we end up here and just print a message and continu3
+    let elapsed = Date().timeIntervalSince(start_time)
+    print("\n>AI Response #\(ctx.tag): ***ERROR \(error) no challenges returned in \(elapsed) secs\n")
+  }
+}
 public func pumpItUp(ctx:ChatContext,
                      templates: [String],
                      jsonOut:FileHandle,
