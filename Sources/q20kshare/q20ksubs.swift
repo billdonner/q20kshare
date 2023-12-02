@@ -169,7 +169,11 @@ public func callChatGPT( ctx:ChatContext,
    "frequency_penalty": 0,
    "presence_penalty": 0,
    "temperature": 1.0,
-   "messages" : """
+   "messages" : [["role": "system",
+                  "content": "this is the system area"],
+                [  "role": "user",
+                   "content": "\(prompt)"]]
+/*"""
 [
     {
         "role": "system",
@@ -181,6 +185,7 @@ public func callChatGPT( ctx:ChatContext,
     }
 ]
 """
+ */
  ]
   print(parameters)
   let x = try JSONSerialization.data(withJSONObject: parameters, options: [])
