@@ -1,14 +1,14 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.5.10"
+  public private(set) var version = "0.5.11"
   public init() {
   }
 }
 
 public struct TopicData : Codable {
-  public init(snarky: String, version: String, author: String, date: String, purpose: String, topics: [Topic]) {
-    self.snarky = snarky
+  public init(description: String, version: String, author: String, date: String, purpose: String, topics: [Topic]) {
+    self.description = description
     self.version = version
     self.author = author
     self.date = date
@@ -16,28 +16,24 @@ public struct TopicData : Codable {
     self.topics = topics
   }
   
-  public var snarky:String
+  public var description:String
   public var version:String
-  public  var author:String
-  public  var date:String
-  public   var purpose:String
-  public  var topics:[Topic]
+  public var author:String
+  public var date:String
+  public var purpose:String
+  public var topics:[Topic]
 }
 
 public struct Topic : Codable {
-  public init(name: String, subject: String, per: Int, desired: Int, pic: String, notes: String) {
+  public init(name: String, subject: String,  pic: String, notes: String) {
     self.name = name
     self.subject = subject
-    self.per = per
-    self.desired = desired
     self.pic = pic
     self.notes = notes
   }
   
   public  var name: String
   public  var subject: String
-  public  var per: Int
-  public  var desired:Int
   public  var pic: String // symbol or url
   public  var notes: String // editors comments
   
@@ -67,24 +63,21 @@ public struct AIReturns: Codable,Equatable,Hashable {
   public let image:String? // URL of image of correct Answer
   
   public func toChallenge(source:String,prompt:String) -> Challenge {
-    Challenge(question: self.question, topic: self.topic, hint:self.hint, answers:self.answers, correct: self.correct,id:UUID().uuidString,date:Date(),source:source,prompt:prompt)
+    Challenge(question: self.question, topic: self.topic, hint:self.hint, answers:self.answers, correct: self.correct,id:UUID().uuidString,date:Date(),source:source)
   }
 }
 public struct Challenge : Codable,Equatable,Hashable,Identifiable  {
   public init(question: String, topic: String, hint: String, answers: [String],
-              correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil, id: String = "", date: Date = Date(),source: String = "", prompt:String = "", opinions:[Opinion] = []) {
+              correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil, id: String = "", date: Date = Date(),source: String = "", opinions:[Opinion] = []) {
     self.question = question
     self.topic = topic
     self.hint = hint
     self.answers = answers
     self.correct = correct
     self.explanation = explanation
-    self.article = article
-    self.image = image
     self.id = id
     self.date = date
     self.aisource = source
-    self.prompt = prompt
     self.opinions = opinions
   }
   
@@ -94,13 +87,10 @@ public struct Challenge : Codable,Equatable,Hashable,Identifiable  {
   public let answers: [String]
   public let correct: String // which answer is correct
   public let explanation: String? // reasoning behind the correctAnswer
-  public let article: String?// URL of article about the correct Answer
-  public let image:String? // URL of image of correct Answer
   // these fields are hidden from the ai and filled in by pumper
   public let id:String // can be real uuid
   public let date:Date // hmmm
   public let aisource:String
-  public let prompt:String
   public let opinions:[Opinion]
   
   
