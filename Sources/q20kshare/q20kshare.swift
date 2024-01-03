@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.5.11"
+  public private(set) var version = "0.5.12"
   public init() {
   }
 }
@@ -68,7 +68,7 @@ public struct AIReturns: Codable,Equatable,Hashable {
 }
 public struct Challenge : Codable,Equatable,Hashable,Identifiable  {
   public init(question: String, topic: String, hint: String, answers: [String],
-              correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil, id: String = "", date: Date = Date(),source: String = "", opinions:[Opinion] = []) {
+              correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil, id: String = "", date: Date = Date(),source: String = "") {
     self.question = question
     self.topic = topic
     self.hint = hint
@@ -78,7 +78,6 @@ public struct Challenge : Codable,Equatable,Hashable,Identifiable  {
     self.id = id
     self.date = date
     self.aisource = source
-    self.opinions = opinions
   }
   
   public let question: String
@@ -91,7 +90,6 @@ public struct Challenge : Codable,Equatable,Hashable,Identifiable  {
   public let id:String // can be real uuid
   public let date:Date // hmmm
   public let aisource:String
-  public let opinions:[Opinion]
   
   
   public static func decodeArrayFrom(data:Data) throws -> [Challenge]{
