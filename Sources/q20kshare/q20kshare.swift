@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.5.17"
+  public private(set) var version = "0.5.18"
   public init() {
   }
 }
@@ -67,12 +67,11 @@ public struct AIReturns: Codable,Equatable,Hashable {
   public let image:String? // URL of image of correct Answer
   
   public func toChallenge(source:String,prompt:String) -> Challenge {
-    Challenge(question: self.question, topic: self.topic, hint:self.hint, answers:self.answers, correct: self.correct,id:UUID().uuidString,date:Date(),source:source)
+    Challenge(question: self.question, topic: self.topic, hint:self.hint, answers:self.answers, correct: self.correct,id:UUID().uuidString,date:Date(),aisource:source)
   }
 }
 public struct Challenge : Codable,Equatable,Hashable,Identifiable  {
-  public init(question: String, topic: String, hint: String, answers: [String],
-              correct: String, explanation: String? = nil, article: String? = nil, image: String? = nil, id: String = "", date: Date = Date(),source: String = "") {
+public init(question: String, topic: String, hint: String, answers: [String], correct: String, explanation: String? = nil, id: String, date: Date, aisource: String) {
     self.question = question
     self.topic = topic
     self.hint = hint
@@ -81,16 +80,16 @@ public struct Challenge : Codable,Equatable,Hashable,Identifiable  {
     self.explanation = explanation
     self.id = id
     self.date = date
-    self.aisource = source
+    self.aisource = aisource
   }
   
+
   public let question: String
   public let topic: String
   public let hint:String // a hint to show if the user needs help
   public let answers: [String]
   public let correct: String // which answer is correct
   public let explanation: String? // reasoning behind the correctAnswer
-  // these fields are hidden from the ai and filled in by pumper
   public let id:String // can be real uuid
   public let date:Date // hmmm
   public let aisource:String
