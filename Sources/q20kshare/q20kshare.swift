@@ -1,10 +1,14 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.5.12"
+  public private(set) var version = "0.5.13"
+  public private(set) var csvcols =
+  "DELETEFLAG,Question,Correct,Topic,Model,Hint,Ans-1,Ans-2,Ans-3,Ans-4,Explanation,ID"
   public init() {
   }
 }
+
+//q20kshare.csvcols
 
 public struct TopicData : Codable {
   public init(description: String, version: String, author: String, date: String, purpose: String, topics: [Topic]) {

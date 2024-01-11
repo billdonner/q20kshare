@@ -1,6 +1,6 @@
 # q20kshare
 
-Freeport.Software 0.5.12
+Freeport.Software 0.5.13  added q20kshare.csvcols
 -------
 
 
