@@ -1,8 +1,8 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.5.13"
-  public private(set) var csvcols =
+  public private(set) var version = "0.5.14"
+  public static let csvcols =
   "DELETEFLAG,Question,Correct,Topic,Model,Hint,Ans-1,Ans-2,Ans-3,Ans-4,Explanation,ID"
   public init() {
   }
