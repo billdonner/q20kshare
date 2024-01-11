@@ -2,11 +2,11 @@ import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
   public private(set) var version = "0.5.14"
-  public static let csvcols =
-  "DELETEFLAG,Question,Correct,Topic,Model,Hint,Ans-1,Ans-2,Ans-3,Ans-4,Explanation,ID"
   public init() {
   }
 }
+let q20kshare_csvcols =
+"DELETEFLAG,Question,Correct,Topic,Model,Hint,Ans-1,Ans-2,Ans-3,Ans-4,Explanation,ID"
 
 //q20kshare.csvcols
 
