@@ -1,6 +1,7 @@
 # q20kshare
 
-Freeport.Software 0.5.18
+Freeport.Software 0.5.19 , add subtopics, rename topicdata to TopicGroup
+removed some unused code and structures
 -------
 
 

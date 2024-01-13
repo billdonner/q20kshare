@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.5.18"
+  public private(set) var version = "0.5.19"
   public init() {
   }
 }
@@ -10,13 +10,12 @@ public let q20kshare_csvcols =
 
 //q20kshare.csvcols
 
-public struct TopicData : Codable {
-  public init(description: String, version: String, author: String, date: String, purpose: String, topics: [Topic]) {
+public struct TopicGroup : Codable {
+  public init(description: String, version: String, author: String, date: String, topics: [Topic]) {
     self.description = description
     self.version = version
     self.author = author
     self.date = date
-    self.purpose = purpose
     self.topics = topics
   }
   
@@ -24,52 +23,27 @@ public struct TopicData : Codable {
   public var version:String
   public var author:String
   public var date:String
-  public var purpose:String
   public var topics:[Topic]
 }
 
 public struct Topic : Codable {
-  public init(name: String, subject: String,  pic: String, notes: String) {
+  public init(name: String, subject: String,  pic: String, notes: String, subtopics:[String]=[]) {
     self.name = name
     self.subject = subject
     self.pic = pic
     self.notes = notes
+    self.subtopics = subtopics
   }
   
   public  var name: String
   public  var subject: String
   public  var pic: String // symbol or url
   public  var notes: String // editors comments
+  public  var subtopics: [String]
   
 }
 /* Challenge(s) is the basic heart of q20k world */
 
-public struct AIReturns: Codable,Equatable,Hashable {
-  public init(question: String, topic: String, hint: String, answers: [String], correct: String,   explanation: String? = nil, article: String? = nil, image: String? = nil) {
-    self.question = question
-    self.topic = topic
-    self.hint = hint
-    self.answers = answers
-    self.correct = correct
-    self.explanation = explanation
-    self.article = article
-    self.image = image 
-  }
-  
-  public let question: String
-   
-  public let topic: String
-  public let hint:String // a hint to show if the user needs help
-  public let answers: [String]
-  public let correct: String // which answer is correct
-  public let explanation: String? // reasoning behind the correctAnswer
-  public let article: String?// URL of article about the correct Answer
-  public let image:String? // URL of image of correct Answer
-  
-  public func toChallenge(source:String,prompt:String) -> Challenge {
-    Challenge(question: self.question, topic: self.topic, hint:self.hint, answers:self.answers, correct: self.correct,id:UUID().uuidString,date:Date(),aisource:source)
-  }
-}
 public struct Challenge : Codable,Equatable,Hashable,Identifiable  {
 public init(question: String, topic: String, hint: String, answers: [String], correct: String, explanation: String? = nil, id: String, date: Date, aisource: String) {
     self.question = question
@@ -126,7 +100,7 @@ public struct GameData : Codable, Hashable,Identifiable,Equatable {
 
 /* a full blended playing field is published to the IOS App*/
 public struct PlayData: Codable {
-  public init(topicData:TopicData, gameDatum: [GameData], playDataId: String, blendDate: Date, pic: String? = nil) {
+  public init(topicData:TopicGroup, gameDatum: [GameData], playDataId: String, blendDate: Date, pic: String? = nil) {
     self.topicData = topicData
     self.gameDatum = gameDatum
     self.playDataId = playDataId
@@ -134,7 +108,7 @@ public struct PlayData: Codable {
     self.pic = pic
   }
   
-  public let topicData: TopicData
+  public let topicData: TopicGroup
   public let gameDatum: [GameData]
   public let playDataId: String
   public let blendDate: Date
@@ -143,33 +117,6 @@ public struct PlayData: Codable {
 }
 
 
-/** Opinions arrive from multiple ChatBots */
-public struct AIOpinion: Codable,Equatable,Hashable,Identifiable {
-  public let id:String
-  public let truth:Bool
-  public let explanation:String
-  
-  public func toOpinion(source:String) -> Opinion{
-    Opinion(id:id,truth:truth ? Truthe.trueValue : Truthe.falseValue
-            ,explanation: explanation,opinionID:UUID().uuidString,source:source)
-  }
-}
-
-// sometimes this comes back a stringy truth value 
-public struct AIAltOpinion: Codable,Equatable,Hashable,Identifiable {
-  public let id:String
-  public let truth:String
-  public let explanation:String
-  
-  public func toOpinion(source:String) -> Opinion{
-    let t = truth.lowercased()
-    let q = Bool(t)
-    if let q = q {
-      return   Opinion(id:id,truth:q ? Truthe.trueValue : Truthe.falseValue,explanation: explanation, opinionID:UUID().uuidString,source:source)
-    }
-    return Opinion(id:id,truth:Truthe.unknownValue,explanation: explanation, opinionID:UUID().uuidString,source:source)
-  }
-}
 public enum Truthe : Int, Codable  {
   case trueValue,falseValue,unknownValue
 }
@@ -258,3 +205,61 @@ public struct TruthQuery :Codable {
   let answer:String
   let truth:Truthe
 }
+/**
+ 
+ public struct AIReturns: Codable,Equatable,Hashable {
+   public init(question: String, topic: String, hint: String, answers: [String], correct: String,   explanation: String? = nil, article: String? = nil, image: String? = nil) {
+     self.question = question
+     self.topic = topic
+     self.hint = hint
+     self.answers = answers
+     self.correct = correct
+     self.explanation = explanation
+     self.article = article
+     self.image = image
+   }
+   
+   public let question: String
+    
+   public let topic: String
+   public let hint:String // a hint to show if the user needs help
+   public let answers: [String]
+   public let correct: String // which answer is correct
+   public let explanation: String? // reasoning behind the correctAnswer
+   public let article: String?// URL of article about the correct Answer
+   public let image:String? // URL of image of correct Answer
+   
+   public func toChallenge(source:String,prompt:String) -> Challenge {
+     Challenge(question: self.question, topic: self.topic, hint:self.hint, answers:self.answers, correct: self.correct,id:UUID().uuidString,date:Date(),aisource:source)
+   }
+ }
+ 
+ 
+ /** Opinions arrive from multiple ChatBots */
+ public struct AIOpinion: Codable,Equatable,Hashable,Identifiable {
+   public let id:String
+   public let truth:Bool
+   public let explanation:String
+   
+   public func toOpinion(source:String) -> Opinion{
+     Opinion(id:id,truth:truth ? Truthe.trueValue : Truthe.falseValue
+             ,explanation: explanation,opinionID:UUID().uuidString,source:source)
+   }
+ }
+
+ // sometimes this comes back a stringy truth value
+ public struct AIAltOpinion: Codable,Equatable,Hashable,Identifiable {
+   public let id:String
+   public let truth:String
+   public let explanation:String
+   
+   public func toOpinion(source:String) -> Opinion{
+     let t = truth.lowercased()
+     let q = Bool(t)
+     if let q = q {
+       return   Opinion(id:id,truth:q ? Truthe.trueValue : Truthe.falseValue,explanation: explanation, opinionID:UUID().uuidString,source:source)
+     }
+     return Opinion(id:id,truth:Truthe.unknownValue,explanation: explanation, opinionID:UUID().uuidString,source:source)
+   }
+ }
+ */
