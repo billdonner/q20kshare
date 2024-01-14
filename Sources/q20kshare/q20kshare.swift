@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.5.19"
+  public private(set) var version = "0.5.20"
   public init() {
   }
 }
@@ -39,7 +39,7 @@ public struct Topic : Codable {
   public  var subject: String
   public  var pic: String // symbol or url
   public  var notes: String // editors comments
-  public  var subtopics: [String]
+  public  var subtopics: [String]?
   
 }
 /* Challenge(s) is the basic heart of q20k world */

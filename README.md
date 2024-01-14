@@ -1,6 +1,9 @@
 # q20kshare
 
-Freeport.Software 0.5.19 , add subtopics, rename topicdata to TopicGroup
+Freeport.Software 0.5.20 - make subtopics optional to preserve value of previously mined data
+
+
+0.5.19 , add subtopics, rename topicdata to TopicGroup
 removed some unused code and structures
 -------
 
