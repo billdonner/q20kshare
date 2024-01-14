@@ -1,6 +1,6 @@
 # q20kshare
 
-Freeport.Software 0.5.22
+Freeport.Software 0.5.23
 
 0.5.21 - set default for subtopics to nil
 
