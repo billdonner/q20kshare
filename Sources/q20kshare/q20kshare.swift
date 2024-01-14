@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.5.21"
+  public private(set) var version = "0.5.22"
   public init() {
   }
 }
@@ -27,7 +27,7 @@ public struct TopicGroup : Codable {
 }
 
 public struct Topic : Codable {
-  public init(name: String, subject: String,  pic: String, notes: String, subtopics:[String]? = nil) {
+  public init(name: String, subject: String,  pic: String, notes: String, subtopics:[String]) {
     self.name = name
     self.subject = subject
     self.pic = pic
