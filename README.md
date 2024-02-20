@@ -1,6 +1,7 @@
 # q20kshare
 
 Freeport.Software 
+0.5.25 - reinstate ChatContext
 
 0.5.24 - add notes field to Challenges
 

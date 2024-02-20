@@ -8,7 +8,7 @@
 import Foundation
 
 public typealias CLEANINGHandler = ((String)->[String])
-//public typealias ITEMHandler = (ChatContext,String,FileHandle?) throws ->()
+public typealias ITEMHandler = (ChatContext,String,FileHandle?) throws ->()
 
 
 public func extractSubstring(str: String, startDelim: String, endDelim: String) -> String {
@@ -21,12 +21,12 @@ public func extractSubstring(str: String, startDelim: String, endDelim: String) 
 }
 
 
-//public func standardSubstitutions(source:String,stats:ChatContext)->String {
-//  let source0 = source.replacingOccurrences(of:"$INDEX", with: "\(stats.global_index)")
-//  let source1 = source0.replacingOccurrences(of:"$NOW", with: "\(Date())")
-//  let source2 = source1.replacingOccurrences(of: "$UUID", with: UUID().uuidString)
-//  return source2
-//}
+public func standardSubstitutions(source:String,stats:ChatContext)->String {
+  let source0 = source.replacingOccurrences(of:"$INDEX", with: "\(stats.global_index)")
+  let source1 = source0.replacingOccurrences(of:"$NOW", with: "\(Date())")
+  let source2 = source1.replacingOccurrences(of: "$UUID", with: UUID().uuidString)
+  return source2
+}
 
 public func extractSubstringsInBrackets(input: String) -> [String] {
   var matches: [String] = []

@@ -1,7 +1,7 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.5.24"
+  public private(set) var version = "0.5.25"
   public init() {
   }
 }
@@ -170,42 +170,42 @@ public struct TruthQuery :Codable {
   let answer:String
   let truth:Truthe
 }
-//public class ChatContext {
-//  public init(max:Int, apiKey: String, apiURL: URL, outURL:URL,model: String , verbose: Bool , dots: Bool, dontcall:Bool,comments_pattern:String,split_pattern:String, style:PumpStyle ) {
-//    self.max = max
-//    self.apiKey = apiKey
-//    self.apiURL = apiURL
-//    self.outURL = outURL
-//    self.model = model
-//    self.dots = dots
-//    self.verbose = verbose
-//    self.dontcall = dontcall
-//    self.comments_pattern = comments_pattern
-//    self.split_pattern = split_pattern
-//    self.style = style
-//  }
-//  
-//  public var apiKey:String
-//  public var apiURL: URL
-//  public var outURL: URL
-//  public var model: String
-//  public var verbose: Bool
-//  public var dots:Bool
-//  public var dontcall:Bool
-//  public var comments_pattern:String
-//  public var split_pattern:String 
-//  public var style:PumpStyle
-//  
-//  public var tag = ""
-//  public var first = true
-//  public var max = 1
-//  public var global_index = 0
-//  public var pumpCount = 0
-//  public var badJsonCount = 0
-//  public var networkGlitches = 0
-//  public var prompt = ""
-//  
-//}
+public class ChatContext {
+  public init(max:Int, apiKey: String, apiURL: URL, outURL:URL,model: String , verbose: Bool , dots: Bool, dontcall:Bool,comments_pattern:String,split_pattern:String, style:PumpStyle ) {
+    self.max = max
+    self.apiKey = apiKey
+    self.apiURL = apiURL
+    self.outURL = outURL
+    self.model = model
+    self.dots = dots
+    self.verbose = verbose
+    self.dontcall = dontcall
+    self.comments_pattern = comments_pattern
+    self.split_pattern = split_pattern
+    self.style = style
+  }
+  
+  public var apiKey:String
+  public var apiURL: URL
+  public var outURL: URL
+  public var model: String
+  public var verbose: Bool
+  public var dots:Bool
+  public var dontcall:Bool
+  public var comments_pattern:String
+  public var split_pattern:String 
+  public var style:PumpStyle
+  
+  public var tag = ""
+  public var first = true
+  public var max = 1
+  public var global_index = 0
+  public var pumpCount = 0
+  public var badJsonCount = 0
+  public var networkGlitches = 0
+  public var prompt = ""
+  
+}
 
 /**
  
