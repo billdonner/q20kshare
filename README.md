@@ -1,10 +1,12 @@
 # q20kshare
 
-Freeport.Software 0.5.23
+Freeport.Software 
+
+0.5.24 - add notes field to Challenges
 
 0.5.21 - set default for subtopics to nil
 
- 0.5.20 - make subtopics optional to preserve value of previously mined data
+0.5.20 - make subtopics optional to preserve value of previously mined data
 
 
 0.5.19 , add subtopics, rename topicdata to TopicGroup

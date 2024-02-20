@@ -1,12 +1,12 @@
 import Foundation
 public struct q20kshare {
   public private(set) var text = "Q20KSHARE"
-  public private(set) var version = "0.5.23"
+  public private(set) var version = "0.5.24"
   public init() {
   }
 }
-public let q20kshare_csvcols =
-"DELETEFLAG,Question,Correct,Topic,Model,Hint,Ans-1,Ans-2,Ans-3,Ans-4,Explanation,ID"
+//public let q20kshare_csvcols =
+//"DELETEFLAG,Question,Correct,Topic,Model,Hint,Ans-1,Ans-2,Ans-3,Ans-4,Explanation,ID"
 
 //q20kshare.csvcols
 
@@ -45,7 +45,7 @@ public struct Topic : Codable {
 /* Challenge(s) is the basic heart of q20k world */
 
 public struct Challenge : Codable,Equatable,Hashable,Identifiable  {
-public init(question: String, topic: String, hint: String, answers: [String], correct: String, explanation: String? = nil, id: String, date: Date, aisource: String) {
+  public init(question: String, topic: String, hint: String, answers: [String], correct: String, explanation: String? = nil, id: String, date: Date, aisource: String,notes:String? = nil) {
     self.question = question
     self.topic = topic
     self.hint = hint
@@ -55,6 +55,7 @@ public init(question: String, topic: String, hint: String, answers: [String], co
     self.id = id
     self.date = date
     self.aisource = aisource
+  self.notes = notes
   }
   
 
@@ -67,6 +68,7 @@ public init(question: String, topic: String, hint: String, answers: [String], co
   public let id:String // can be real uuid
   public let date:Date // hmmm
   public let aisource:String
+  public let notes:String? // for excel users, etc
   
   
   public static func decodeArrayFrom(data:Data) throws -> [Challenge]{
@@ -146,43 +148,6 @@ public struct ChatGPTResponse: Codable {
   public let choices: [ChatGPTChoice]
 }
 
-
-public class ChatContext {
-  public init(max:Int, apiKey: String, apiURL: URL, outURL:URL,model: String , verbose: Bool , dots: Bool, dontcall:Bool,comments_pattern:String,split_pattern:String, style:PumpStyle ) {
-    self.max = max
-    self.apiKey = apiKey
-    self.apiURL = apiURL
-    self.outURL = outURL
-    self.model = model
-    self.dots = dots
-    self.verbose = verbose
-    self.dontcall = dontcall
-    self.comments_pattern = comments_pattern
-    self.split_pattern = split_pattern
-    self.style = style
-  }
-  
-  public var apiKey:String
-  public var apiURL: URL
-  public var outURL: URL
-  public var model: String
-  public var verbose: Bool
-  public var dots:Bool
-  public var dontcall:Bool
-  public var comments_pattern:String
-  public var split_pattern:String 
-  public var style:PumpStyle
-  
-  public var tag = ""
-  public var first = true
-  public var max = 1
-  public var global_index = 0
-  public var pumpCount = 0
-  public var badJsonCount = 0
-  public var networkGlitches = 0
-  public var prompt = ""
-  
-}
 public enum PumpStyle {
   case promptor
   case validator
@@ -205,6 +170,43 @@ public struct TruthQuery :Codable {
   let answer:String
   let truth:Truthe
 }
+//public class ChatContext {
+//  public init(max:Int, apiKey: String, apiURL: URL, outURL:URL,model: String , verbose: Bool , dots: Bool, dontcall:Bool,comments_pattern:String,split_pattern:String, style:PumpStyle ) {
+//    self.max = max
+//    self.apiKey = apiKey
+//    self.apiURL = apiURL
+//    self.outURL = outURL
+//    self.model = model
+//    self.dots = dots
+//    self.verbose = verbose
+//    self.dontcall = dontcall
+//    self.comments_pattern = comments_pattern
+//    self.split_pattern = split_pattern
+//    self.style = style
+//  }
+//  
+//  public var apiKey:String
+//  public var apiURL: URL
+//  public var outURL: URL
+//  public var model: String
+//  public var verbose: Bool
+//  public var dots:Bool
+//  public var dontcall:Bool
+//  public var comments_pattern:String
+//  public var split_pattern:String 
+//  public var style:PumpStyle
+//  
+//  public var tag = ""
+//  public var first = true
+//  public var max = 1
+//  public var global_index = 0
+//  public var pumpCount = 0
+//  public var badJsonCount = 0
+//  public var networkGlitches = 0
+//  public var prompt = ""
+//  
+//}
+
 /**
  
  public struct AIReturns: Codable,Equatable,Hashable {
